@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var User = require("../models/User").User;
+var User = require("../models/models").User;
 
 // User
 router.get('/user/', function (req, res) {
