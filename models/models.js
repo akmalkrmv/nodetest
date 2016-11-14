@@ -5,15 +5,16 @@ var UserSchema = new mongoose.Schema({
   email: { type: String }
 });
 var LanguageSchema = new mongoose.Schema({
-  name: { type: String }
+  name: { type: String },
+  words: [{ type: Mongoose.Schema.ObjectId, ref: 'word' }]
 });
 var VocabularySchema = new mongoose.Schema({
-  username: { type: String },
-  email: { type: String }
+  image: { data: Buffer, contentType: String },
+  words: [{ type: Mongoose.Schema.ObjectId, ref: 'word' }]
 });
 var WordSchema = new mongoose.Schema({
-  username: { type: String },
-  email: { type: String }
+  languageId: { type: Mongoose.Schema.ObjectId, ref: 'language' },
+  vocabularyId: { type: Mongoose.Schema.ObjectId, ref: 'vocabulary' }
 });
 
 var User = mongoose.model('user', UserSchema);
