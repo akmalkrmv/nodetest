@@ -1,0 +1,19 @@
+link(href='/css/bootstrap.css', rel='stylesheet')
+script(src="/js/jquery.js")
+script(src="/js/bootstrap.js")
+script(src="js/angular.js")
+
+block content
+
+    form#formEditUser.container(name="edituser",method="post",action="/user/update", style="margin-top:200px")
+        input#userId(type="hidden", name="userId" value="#{user._id}")
+        div.form-group
+            label(for="username") Username
+            input#userName.form-control(type="text", placeholder="Username", name="username", value="#{user.username}")    
+        
+        div.form-group
+            label(for="useremail") Email
+            input#userEmail.form-control(type="email", placeholder="Email", name="useremail",  value="#{user.email}")    
+            
+        button#btnSubmit.btn.btn-primary(type="submit") submit
+
