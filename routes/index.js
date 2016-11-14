@@ -9,19 +9,19 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/language', function (req, res, next) {
-    res.render('index', {
+    res.render('language/index', {
         title: 'Languages'
     });
 });
 
 router.get('/vocabulary', function (req, res, next) {
-    res.render('index', {
+    res.render('vocabulary/index', {
         title: 'Vocabulary'
     });
 });
 
 router.get('/word', function (req, res, next) {
-    res.render('index', {
+    res.render('word/index', {
         title: 'Words'
     });
 });

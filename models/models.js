@@ -13,6 +13,7 @@ var VocabularySchema = new mongoose.Schema({
   words: [{ type: mongoose.Schema.ObjectId, ref: 'word' }]
 });
 var WordSchema = new mongoose.Schema({
+  text: { type: String },
   languageId: { type: mongoose.Schema.ObjectId, ref: 'language' },
   vocabularyId: { type: mongoose.Schema.ObjectId, ref: 'vocabulary' }
 });

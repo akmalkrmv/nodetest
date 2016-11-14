@@ -36,3 +36,116 @@ app.controller("UserCtrl", ["$scope", "$http", function ($scope, $http) {
     }
 
 }]);
+
+
+app.controller("LanguageCtrl", ["$scope", "$http", function ($scope, $http) {
+
+    loadAll();
+
+    function loadAll() {
+        $http.get("/api/language/").then(function (response) {
+            $scope.languages = response.data;
+        });
+    }
+
+    $scope.create = function () {
+        $http.post("/api/language/", $scope.newUser).then(function (response) {
+            //$scope.languages = response.data;
+            //$scope.newLanguage = new Language();
+        });
+    }
+
+    $scope.update = function (language) {
+        $http.put("/api/language/" + language._id, language).then(function (response) {
+            //$scope.languages = response.data;
+        });
+    }
+
+    $scope.remove = function (event, language) {
+        event.preventDefault();
+
+        if (confirm('Are you sure to delete this?'))
+            $http.delete("/api/language/" + language._id).then(function (response) {
+                // $scope.languages = response.data;
+                var index = $scope.languages.indexOf(language);
+                $scope.languages.splice(index, 1);
+            });
+    }
+
+}]);
+
+
+
+app.controller("WordCtrl", ["$scope", "$http", function ($scope, $http) {
+
+    loadAll();
+
+    function loadAll() {
+        $http.get("/api/word/").then(function (response) {
+            $scope.words = response.data;
+        });
+    }
+
+    $scope.create = function () {
+        $http.post("/api/word/", $scope.newUser).then(function (response) {
+            //$scope.words = response.data;
+            //$scope.newWord = new Word();
+        });
+    }
+
+    $scope.update = function (word) {
+        $http.put("/api/word/" + word._id, word).then(function (response) {
+            //$scope.words = response.data;
+        });
+    }
+
+    $scope.remove = function (event, word) {
+        event.preventDefault();
+
+        if (confirm('Are you sure to delete this?'))
+            $http.delete("/api/word/" + word._id).then(function (response) {
+                // $scope.words = response.data;
+                var index = $scope.words.indexOf(word);
+                $scope.words.splice(index, 1);
+            });
+    }
+
+}]);
+
+
+
+app.controller("VocabularyCtrl", ["$scope", "$http", function ($scope, $http) {
+
+    loadAll();
+
+    function loadAll() {
+        $http.get("/api/vocabulary/").then(function (response) {
+            $scope.vocabularies = response.data;
+        });
+    }
+
+    $scope.create = function () {
+        $http.post("/api/vocabulary/", $scope.newUser).then(function (response) {
+            //$scope.vocabularies = response.data;
+            //$scope.newVocabulary = new Vocabulary();
+        });
+    }
+
+    $scope.update = function (vocabulary) {
+        $http.put("/api/vocabulary/" + vocabulary._id, vocabulary).then(function (response) {
+            //$scope.vocabularies = response.data;
+        });
+    }
+
+    $scope.remove = function (event, vocabulary) {
+        event.preventDefault();
+
+        if (confirm('Are you sure to delete this?'))
+            $http.delete("/api/vocabulary/" + vocabulary._id).then(function (response) {
+                // $scope.vocabularies = response.data;
+                var index = $scope.vocabularies.indexOf(vocabulary);
+                $scope.vocabularies.splice(index, 1);
+            });
+    }
+
+}]);

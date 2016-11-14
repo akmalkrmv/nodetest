@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+
+    div.container(ng-controller="LanguageCtrl")
+        h2 Users
+        p
+            a(href="/language/create") Add language
+        
+        table.table.table-bordered
+            thead.thead-inverse
+                tr
+                    th Name
+                    th Actions
+
+            tbody
+                tr(ng-repeat="language in languages")
+                    form#languageUpdateForm.container(name="addlanguage", method="post", action="/language/update/", style="margin-top:200px")
+                        input(type="hidden", name="languageId")
+                        td 
+                            label {{language.name}}
+                            input(type="text", style="display:none", value="{{language.name}}",class="{{language._id}}", name="name")
+                        td 
+                            a(href='/language/edit/{{language._id}}') edit
+                            span &nbsp
+                            a(href, ng-click='remove($event, language)') delete 
