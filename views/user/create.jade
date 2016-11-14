@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+   
+    form#formAddUser.container(name="adduser",method="post",action="/api/user/", style="margin-top:200px")
+
+        div.form-group
+            label(for="username") Username
+            input#inputUserName.form-control(type="text", placeholder="Username", name="username")    
+        
+        div.form-group
+            label(for="useremail") Email
+            input#inputUserEmail.form-control(type="email", placeholder="Email", name="email")    
+            
+        button#btnSubmit.btn.btn-primary(type="submit") Submit

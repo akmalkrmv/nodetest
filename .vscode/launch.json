@@ -25,7 +25,7 @@
             "name": "Attach",
             "type": "node",
             "request": "attach",
-            "port": 6677,
+            "port": 5858,
             "address": "localhost",
             "restart": false,
             "sourceMaps": false,
@@ -38,7 +38,7 @@
             "type": "node",
             "request": "attach",
             "processId": "${command.PickProcess}",
-            "port": 6677,
+            "port": 5858,
             "sourceMaps": false,
             "outFiles": []
         }

@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+
+    div.container(ng-controller="UserCtrl")
+        h2 Users
+        p
+            a(href="/user/create") Add user
+        
+        table.table.table-bordered
+            thead.thead-inverse
+                tr
+                    th Username
+                    th Email
+                    th Actions
+
+            tbody
+                tr(ng-repeat="user in users")
+                    form#userUpdateForm.container(name="adduser", method="post", action="/user/update/", style="margin-top:200px")
+                        input(type="hidden", name="userId")
+                        td 
+                            label {{user.username}}
+                            input(type="text", style="display:none", value="{{user.username}}",class="{{user._id}}", name="username")
+                        td 
+                            label {{user.email}}
+                            input(type="text", style="display:none", value="{{user.email}}",class="{{user._id}}", name="useremail")
+                        td 
+                            a(href='/user/edit/{{user._id}}') edit
+                            span &nbsp
+                            a(href, ng-click='remove($event, user)') delete 
+                            //- a(href='/user/delete/{{user._id}}') delete  

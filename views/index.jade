@@ -1,13 +1,15 @@
 extends layout
 
 block content
-
-  h1= title
-  p Welcome to users list page!
-  p There are {{users.length}}
+  
+  div
+    h1= title
+    p Welcome to users list page!
+    div(ng-controller="userCtrl")
+      p There are currently {{userCount}} users in database!
   
 
-  div(ng-app="usersApp", ng-controller="myCtrl")
+  
     
 
  
