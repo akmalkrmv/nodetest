@@ -57,8 +57,7 @@ app.controller("UserCtrl", ["$scope", "$http", function ($scope, $http) {
     $scope.$watch('users', function (newValue) {
         if (newValue === undefined) return;
         $scope.userCount = newValue.length;
-    });
-
+    })
     $scope.save = function () {
         if (!$scope.selectedUser._id) {
             $scope.create();
