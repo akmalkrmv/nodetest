@@ -5,10 +5,15 @@ html()
     title= title + ' - NodeTest'
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+
     script(src="/scripts/libs/jquery.js")
     script(src="/scripts/libs/angular.min.js")
     script(src="/scripts/libs/bootstrap.min.js")
-    script(src="/scripts/app/app.js")
+
+    script(src="/scripts/app/user-controller.js")
+    script(src="/scripts/app/word-controller.js")
+    script(src="/scripts/app/language-controller.js")
+    script(src="/scripts/app/vocabulary-controller.js")
 
   body(ng-app="app")
     include partials/navbar.jade
