@@ -13,16 +13,11 @@ app.controller("LanguageCtrl", ["$scope", "$http", function ($scope, $http) {
     }
 
     $scope.create = function () {
-        $http.post(rootUrl, $scope.newUser).then(function (response) {
-            //$scope.languages = response.data;
-            //$scope.newLanguage = new Language();
-        });
+        $http.post(rootUrl, $scope.newUser);
     }
 
     $scope.update = function (language) {
-        $http.put(rootUrl + language._id, language).then(function (response) {
-            //$scope.languages = response.data;
-        });
+        $http.put(rootUrl + language._id, language);
     }
 
     $scope.remove = function (event, language) {
@@ -30,11 +25,10 @@ app.controller("LanguageCtrl", ["$scope", "$http", function ($scope, $http) {
         if (!confirm('Are you sure to delete this?')) return;
 
         $http.delete(rootUrl + language._id).then(function (response) {
-            // $scope.languages = response.data;
             var index = $scope.languages.indexOf(language);
-            $scope.languages.splice(index, 1);
+            if (index >= 0)
+                $scope.languages.splice(index, 1);
         });
     }
 
 }]);
-
