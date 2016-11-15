@@ -1,18 +1,18 @@
-var app = angular.module("app", []);
+var app = angular.module("app");
 
 // ahaha tut prikol, toje pereputal s nodejs, dolbanniy js 
 // var User = require("../models/User").User;
 
-var User = function (username, email) {
-    var self = this;
+ app.controller("UserCtrl", ["$scope", "$http", function ($scope, $http) {
 
-    self.username = username;
-    self.email = email;
+    var User = function (username, email) {
+        var self = this;
 
-    return self;
-};
+        self.username = username;
+        self.email = email;
 
-app.controller("UserCtrl", ["$scope", "$http", function ($scope, $http) {
+        return self;
+    };
 
     loadAll();
 

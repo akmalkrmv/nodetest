@@ -1,4 +1,4 @@
-var app = angular.module("app", []);
+var app = angular.module("app");
 
 app.controller("LanguageCtrl", ["$scope", "$http", function ($scope, $http) {
 
