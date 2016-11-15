@@ -19,7 +19,7 @@ router.get('/vocabulary', function (req, res, next) {
         title: 'Vocabulary'
     });
 });
-
+//asdfff
 router.get('/word', function (req, res, next) {
     res.render('word/index', {
         title: 'Words'
