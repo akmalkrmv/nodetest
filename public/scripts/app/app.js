@@ -1,5 +1,8 @@
 var app = angular.module("app", []);
-//var User = require("../models/User").User;
+
+// ahaha tut prikol, toje pereputal s nodejs, dolbanniy js 
+// var User = require("../models/User").User;
+
 var User = function (username, email) {
     var self = this;
 
@@ -14,14 +17,12 @@ app.controller("UserCtrl", ["$scope", "$http", function ($scope, $http) {
     loadAll();
 
     $scope.createUser = function (str) {
-        $scope.title = "Create";
         $scope.selectedUser = new User();
+        $scope.title = "Create";
         $scope.method = "create()";
     }
     $scope.create = function () {
-        console.log("create query");
         if (!$scope.selectedUser.email || !$scope.selectedUser.username) {
-            console.log("pnx");
             return;
         }
         $http.post("/api/user/", $scope.selectedUser).then(function (response) {
@@ -35,25 +36,25 @@ app.controller("UserCtrl", ["$scope", "$http", function ($scope, $http) {
 
         if (confirm('Are you sure to delete this?')) {
             $http.delete("/api/user/" + user._id).then(function (response) {
-                // $scope.users = response.data; // ebaniy zombi
                 var index = $scope.users.indexOf(user);
-                $scope.users.splice(index, 1);
+                if (index >= 0)
+                    $scope.users.splice(index, 1);
             });
         }
     }
 
     $scope.selectUser = function (user, str) {
-        $scope.title = "Update";
         $scope.selectedUser = user;
+        $scope.title = "Update";
         $scope.method = "update()";
     }
     $scope.update = function () {
-        console.log("update query");
         $http.put("/api/user/" + $scope.selectedUser._id, $scope.selectedUser).then(function (response) {
             $('#userModal').modal('toggle');
         });
     }
 
+    // remove this
     $scope.$watch('users', function (newValue) {
         if (newValue === undefined) return;
         $scope.userCount = newValue.length;
@@ -86,16 +87,11 @@ app.controller("LanguageCtrl", ["$scope", "$http", function ($scope, $http) {
     }
 
     $scope.create = function () {
-        $http.post("/api/language/", $scope.newUser).then(function (response) {
-            //$scope.languages = response.data;
-            //$scope.newLanguage = new Language();
-        });
+        $http.post("/api/language/", $scope.newUser).then(function (response) {});
     }
 
     $scope.update = function (language) {
-        $http.put("/api/language/" + language._id, language).then(function (response) {
-            //$scope.languages = response.data;
-        });
+        $http.put("/api/language/" + language._id, language).then(function (response) {});
     }
 
     $scope.remove = function (event, language) {
@@ -103,12 +99,10 @@ app.controller("LanguageCtrl", ["$scope", "$http", function ($scope, $http) {
 
         if (confirm('Are you sure to delete this?'))
             $http.delete("/api/language/" + language._id).then(function (response) {
-                // $scope.languages = response.data;
                 var index = $scope.languages.indexOf(language);
                 $scope.languages.splice(index, 1);
             });
     }
-
 }]);
 
 
