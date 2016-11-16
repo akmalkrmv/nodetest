@@ -1,8 +1,8 @@
 var router = require('express').Router();
 var models = require("../models/models");
 var User = models.User;
-var Language = models.Language;
 var Word = models.Word;
+var Language = models.Language;
 var Vocabulary = models.Vocabulary;
 
 // User
