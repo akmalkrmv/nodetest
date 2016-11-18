@@ -3,16 +3,16 @@ var app = angular.module("app");
 // ahaha tut prikol, toje pereputal s nodejs, dolbanniy js 
 // var User = require("../models/User").User;
 
- app.controller("UserCtrl", ["$scope", "$http", function ($scope, $http) {
+var User = function (username, email) {
+    var self = this;
 
-    var User = function (username, email) {
-        var self = this;
+    self.username = username;
+    self.email = email;
 
-        self.username = username;
-        self.email = email;
+    return self;
+};
 
-        return self;
-    };
+app.controller("UserCtrl", ["$scope", "$http", function ($scope, $http) {
 
     loadAll();
 
@@ -53,12 +53,6 @@ var app = angular.module("app");
             $('#userModal').modal('toggle');
         });
     }
-
-    // remove this
-    $scope.$watch('users', function (newValue) {
-        if (newValue === undefined) return;
-        $scope.userCount = newValue.length;
-    });
 
     $scope.save = function () {
         if (!$scope.selectedUser._id) {

@@ -6,25 +6,26 @@ block content
         h2 Users
         p
             a(href="/vocabulary/create") Add vocabulary
-            input#file(type="file")
-            button(ng-click="uploadImage()") Upload image
         
         table.table.table-bordered
             thead.thead-inverse
                 tr
                     th Name
+                    th Image
                     th Actions
 
             tbody
                 tr(ng-repeat="vocabulary in vocabularies")
-                    form#vocabularyUpdateForm.container(name="addvocabulary", method="post", action="/vocabulary/update/", style="margin-top:200px")
-                        input(type="hidden", name="vocabularyId")
-                        td 
-                            label {{vocabulary.name}}
-                            input(type="text", style="display:none", value="{{vocabulary.name}}", class="{{vocabulary._id}}", name="name")
-                        td 
-                            image(ng-src="{{vocabulary.imageSrc}}")
-                        td 
-                            a(href='/vocabulary/edit/{{vocabulary._id}}') edit
-                            span &nbsp
-                            a(href, ng-click='remove($event, vocabulary)') delete 
+                    input(type="hidden", name="vocabularyId")
+                    td 
+                        label {{vocabulary.name}}
+                        input(style="display:none", value="{{vocabulary.name}}", name="name")
+                    td 
+                        image(ng-src="{{vocabulary.imageSrc}}")
+                        form(method="post", action="{{toAddImageActionUrl(vocabulary)}}", enctype="multipart/form-data")
+                            input(type="file", name="imageFile")
+                            button(type="submit") Upload image
+                    td 
+                        a(href='/vocabulary/edit/{{vocabulary._id}}') edit
+                        span &nbsp
+                        a(href, ng-click='remove($event, vocabulary)') delete 

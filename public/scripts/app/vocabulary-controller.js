@@ -45,6 +45,10 @@ app.controller("VocabularyCtrl", ["$scope", "$http", function ($scope, $http) {
         });
     }
 
+    $scope.toAddImageActionUrl = function (vocabulary) {
+        return '/api/vocabulary/' + vocabulary._id + '/image/';
+    };
+
     $scope.uploadImage = function () {
         var file = document.getElementById('file').files[0];
         var fileReader = new FileReader();
