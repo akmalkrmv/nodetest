@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+
+    div.container(ng-controller="WordCtrl")
+        h2 Users
+        p
+            a(href="/word/create") Add word
+        
+        table.table.table-bordered
+            thead.thead-inverse
+                tr
+                    th Text
+                    th Actions
+
+            tbody
+                tr(ng-repeat="word in words")
+                    form#wordUpdateForm.container(name="addword", method="post", action="/word/update/", style="margin-top:200px")
+                        input(type="hidden", name="wordId")
+                        td 
+                            label {{word.text}}
+                            input(type="text", style="display:none", value="{{word.text}}",class="{{word._id}}", name="name")
+                        td 
+                            a(href='/word/edit/{{word._id}}') edit
+                            span &nbsp
+                            a(href, ng-click='remove($event, word)') delete 

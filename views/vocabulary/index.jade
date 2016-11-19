@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+
+    div.container(ng-controller="VocabularyCtrl")
+        h2 Users
+        p
+            a(href="/vocabulary/create") Add vocabulary
+            input#file(type="file")
+            button(ng-click="uploadImage()") Upload image
+        
+        table.table.table-bordered
+            thead.thead-inverse
+                tr
+                    th Name
+                    th Actions
+
+            tbody
+                tr(ng-repeat="vocabulary in vocabularies")
+                    form#vocabularyUpdateForm.container(name="addvocabulary", method="post", action="/vocabulary/update/", style="margin-top:200px")
+                        input(type="hidden", name="vocabularyId")
+                        td 
+                            label {{vocabulary.name}}
+                            input(type="text", style="display:none", value="{{vocabulary.name}}", class="{{vocabulary._id}}", name="name")
+                        td 
+                            image(ng-src="{{vocabulary.imageSrc}}")
+                        td 
+                            a(href='/vocabulary/edit/{{vocabulary._id}}') edit
+                            span &nbsp
+                            a(href, ng-click='remove($event, vocabulary)') delete 

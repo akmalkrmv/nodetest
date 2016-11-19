@@ -1,0 +1,52 @@
+extends ../layout
+
+block content
+
+    div.container(ng-controller="UserCtrl")
+        h2 Users
+        p
+            button.btn.btn-primary(data-toggle="modal", data-target="#userModal",ng-click='createUser()') New User
+        
+        table.table.table-bordered
+            thead.thead-inverse
+                tr
+                    th Username
+                    th Email
+                    th Actions
+
+            tbody
+                tr(ng-repeat="user in users")
+                    form#userUpdateForm.container(name="adduser", method="post", action="/user/update/", style="margin-top:200px")
+                        input(type="hidden", name="userId")
+                        td 
+                            label {{user.username}}
+                            input(type="text", style="display:none", value="{{user.username}}",class="{{user._id}}", name="username")
+                        td 
+                            label {{user.email}}
+                            input(type="text", style="display:none", value="{{user.email}}",class="{{user._id}}", name="useremail")
+                        td 
+                            a(href, data-toggle="modal", data-target="#userModal", ng-click='selectUser(user)') edit
+                            span &nbsp
+                            a(href, ng-click='remove($event, user)') delete 
+            
+        div#userModal.modal.fade(role="dialog")
+            div.modal-dialog
+                div.modal-content
+                    div.modal-header
+                        button.close(type="button", data-dismiss="modal") &times;
+                        h4.modal-title {{title}}
+                    div.modal-body
+                        div
+                            form
+                                div.form-group
+                                    label(for="username") Username:
+                                    input#usr.form-control(type="text", ng-model="selectedUser.username")
+                                div.form-group
+                                    label(for="email") Email:
+                                    input#email.form-control(type="text", ng-model="selectedUser.email")
+                                
+                    div.modal-footer
+                        button.btn.btn-primary(ng-click='save()') Save
+                        button.btn.btn-default(data-dismiss="modal") Close
+                        
+

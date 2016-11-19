@@ -1,12 +1,21 @@
 doctype html
 html()
+
   head
-    title= title
+    title= title + ' - NodeTest'
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.css')
-    script(src="/javascripts/jquery.js")
-    script(src="/javascripts/angular.js")
-    script(src="/javascripts/app.js")
+
+    script(src="/scripts/libs/jquery.js")
+    script(src="/scripts/libs/angular.min.js")
+    script(src="/scripts/libs/bootstrap.min.js")
+
+    script(src="/scripts/app/user-controller.js")
+    script(src="/scripts/app/word-controller.js")
+    script(src="/scripts/app/language-controller.js")
+    script(src="/scripts/app/vocabulary-controller.js")
+
   body(ng-app="app")
-    
-    block content
+    include partials/navbar.jade
+    div.container
+      block content
