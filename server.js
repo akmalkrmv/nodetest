@@ -23,8 +23,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(busboy());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/fonts/', express.static(path.join(__dirname, 'public/fonts')));
 
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
     req.db = mongoose.connection;
     next();
 });
@@ -32,22 +33,24 @@ app.use(function(req, res, next){
 // Routes
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var api = require('./routes/api');
-
 app.use('/', routes);
 app.use('/user', users);
-app.use('/api', api);
+
+app.use('/api', require('./routes/api/user'));
+app.use('/api', require('./routes/api/word'));
+app.use('/api', require('./routes/api/language'));
+app.use('/api', require('./routes/api/vocabulary'));
 
 
 // Error handling
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
@@ -56,7 +59,7 @@ if (app.get('env') === 'development') {
     });
 }
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
