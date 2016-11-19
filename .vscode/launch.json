@@ -15,6 +15,7 @@
                 "--nolazy"
             ],
             "env": {
+                //"PORT": "3300",
                 "NODE_ENV": "development"
             },
             "console": "internalConsole",

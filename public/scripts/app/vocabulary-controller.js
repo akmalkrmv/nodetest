@@ -1,37 +1,37 @@
-var app = angular.module("app", []);
+var app = angular.module("app");
 
 app.controller("VocabularyCtrl", ["$scope", "$http", function ($scope, $http) {
-
     var rootUrl = '/api/vocabulary/';
 
-    loadAll();
-
-    function loadAll() {
+    $scope.loadAll = function () {
         $http.get(rootUrl).then(function (response) {
-            var vocabularies = response.data;
-            // for (var i in vocabularies) {
-            //     var vocabulary = vocabularies[i];
-            //     if (vocabulary.image && vocabulary.image.data) {
-            //         //vocabulary.imageSrc = 'data:' + vocabulary.image.contentType + ';base64,' + vocabulary.image.data.toString('base64');
-            //         vocabulary.imageSrc = 'data:' + vocabulary.image.contentType + ';base64,' + vocabulary.image.data;
-            //     }
-            // }
-
-            $scope.vocabularies = vocabularies;
+            $scope.vocabularies = response.data;
         });
+
+        if (!$scope.words) {
+            $http.get("/api/word/").then(function (response) {
+                $scope.words = response.data;
+            });
+        }
+    }
+
+    $scope.select = function (item) {
+        $scope.selected = item;
+    }
+
+    $scope.save = function () {
+        if ($scope.selected && $scope.selected._id)
+            $scope.update($scope.selected).then($scope.loadAll);
+        else
+            $scope.create().then($scope.loadAll);
     }
 
     $scope.create = function () {
-        $http.post(rootUrl, $scope.newUser).then(function (response) {
-            //$scope.vocabularies = response.data;
-            //$scope.newVocabulary = new Vocabulary();
-        });
+        return $http.post(rootUrl, $scope.selected);
     }
 
     $scope.update = function (vocabulary) {
-        $http.put(rootUrl + vocabulary._id, vocabulary).then(function (response) {
-            //$scope.vocabularies = response.data;
-        });
+        return $http.put(rootUrl + vocabulary._id, vocabulary);
     }
 
     $scope.remove = function (event, vocabulary) {
@@ -45,25 +45,11 @@ app.controller("VocabularyCtrl", ["$scope", "$http", function ($scope, $http) {
         });
     }
 
-    $scope.uploadImage = function () {
-        var file = document.getElementById('file').files[0];
-        var fileReader = new FileReader();
+    $scope.toAddImageActionUrl = function (vocabulary) {
+        return '/api/vocabulary/' + vocabulary._id + '/image/';
+    };
 
-        $http.post(rootUrl, {
-            image: file
-        });
-
-        fileReader.onloadend = function (e) {
-            var vocabulary = {
-                image: {
-                    data: e.target.result,
-                    contentType: file.type
-                }
-            };
-
-            $http.post(rootUrl, vocabulary);
-        };
-        //fileReader.readAsBinaryString(file);
-    }
+    // initialize
+    $scope.loadAll();
 
 }]);

@@ -3,24 +3,53 @@ extends ../layout
 block content
 
     div.container(ng-controller="WordCtrl")
-        h2 Users
+        h2 Words
         p
-            a(href="/word/create") Add word
+            button.btn.btn-default(data-toggle="modal", data-target="#wordModal", ng-click='select({})') Add word
         
-        table.table.table-bordered
+        table.table.table-striped
             thead.thead-inverse
                 tr
                     th Text
-                    th Actions
+                    th Language
+                    th.col-md-2 Actions
 
             tbody
-                tr(ng-repeat="word in words")
-                    form#wordUpdateForm.container(name="addword", method="post", action="/word/update/", style="margin-top:200px")
-                        input(type="hidden", name="wordId")
-                        td 
-                            label {{word.text}}
-                            input(type="text", style="display:none", value="{{word.text}}",class="{{word._id}}", name="name")
-                        td 
-                            a(href='/word/edit/{{word._id}}') edit
-                            span &nbsp
-                            a(href, ng-click='remove($event, word)') delete 
+                tr(ng-repeat="word in words | orderBy: ['language.name','text']")
+                    td
+                        button.btn.btn-primary.btn-xs(ng-click="playAudio($event, word)") 
+                            span.glyphicon.glyphicon-volume-up
+                        span &nbsp{{word.text}}
+                    td 
+                        span {{word.language.name}}
+                    td 
+                        button.btn.btn-default.btn-xs(data-toggle="modal", data-target="#wordModal", ng-click='select(word)') 
+                            span.glyphicon.glyphicon-pencil
+                            span  Edit
+                        span &nbsp
+                        button.btn.btn-danger.btn-xs(ng-click='remove($event, word)')  
+                            span.glyphicon.glyphicon-trash
+                            //- span  Delete
+
+
+                                
+        div#wordModal.modal.fade(role="dialog")
+            div.modal-dialog
+                div.modal-content
+                    div.modal-header
+                        button.close(type="button", data-dismiss="modal") &times;
+                        h4.modal-title {{title}}
+                    div.modal-body
+                        div
+                            form
+                                div.form-group
+                                    label(for="text") Text:
+                                    input.form-control(ng-model="selected.text")
+                                div.form-group
+                                    label(for="language") Language:
+                                    select.form-control(ng-model="selected.language", 
+                                                        ng-options="item._id as item.name for item in languages track by item._id")
+                                
+                    div.modal-footer
+                        button.btn.btn-primary(data-dismiss="modal", ng-click='save()') Save
+                        button.btn.btn-default(data-dismiss="modal") Close

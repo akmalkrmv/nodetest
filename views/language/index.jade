@@ -3,24 +3,45 @@ extends ../layout
 block content
 
     div.container(ng-controller="LanguageCtrl")
-        h2 Users
-        p
-            a(href="/language/create") Add language
+        h2 Languages
+         p
+            button.btn.btn-default(data-toggle="modal", data-target="#languageModal", ng-click='select({})') Add language
         
         table.table.table-bordered
             thead.thead-inverse
                 tr
                     th Name
+                    th Culture Name
                     th Actions
 
             tbody
                 tr(ng-repeat="language in languages")
-                    form#languageUpdateForm.container(name="addlanguage", method="post", action="/language/update/", style="margin-top:200px")
-                        input(type="hidden", name="languageId")
-                        td 
-                            label {{language.name}}
-                            input(type="text", style="display:none", value="{{language.name}}",class="{{language._id}}", name="name")
-                        td 
-                            a(href='/language/edit/{{language._id}}') edit
-                            span &nbsp
-                            a(href, ng-click='remove($event, language)') delete 
+                    td 
+                        label {{language.name}}
+                    td 
+                        label {{language.cultureName}}
+                    td  
+                        a(href, data-toggle="modal", data-target="#languageModal", ng-click='select(language)') edit
+                        span &nbsp
+                        a(href, ng-click='remove($event, language)') delete 
+
+
+        div#languageModal.modal.fade(role="dialog")
+            div.modal-dialog
+                div.modal-content
+                    div.modal-header
+                        button.close(type="button", data-dismiss="modal") &times;
+                        h4.modal-title {{title}}
+                    div.modal-body
+                        div
+                            form
+                                div.form-group
+                                    label(for="name") Name:
+                                    input.form-control(ng-model="selected.name")
+                                div.form-group
+                                    label(for="cultureName") Culture Name:
+                                    input.form-control(ng-model="selected.cultureName")
+                                
+                    div.modal-footer
+                        button.btn.btn-primary(data-dismiss="modal", ng-click='save()') Save
+                        button.btn.btn-default(data-dismiss="modal") Close

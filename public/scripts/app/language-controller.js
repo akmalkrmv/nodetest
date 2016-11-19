@@ -1,23 +1,31 @@
-var app = angular.module("app", []);
+var app = angular.module("app");
 
 app.controller("LanguageCtrl", ["$scope", "$http", function ($scope, $http) {
-
     var rootUrl = '/api/language/';
 
-    loadAll();
-
-    function loadAll() {
+    $scope.loadAll = function () {
         $http.get(rootUrl).then(function (response) {
             $scope.languages = response.data;
         });
     }
 
+    $scope.select = function (item) {
+        $scope.selected = item;
+    }
+
+    $scope.save = function () {
+        if ($scope.selected && $scope.selected._id)
+            $scope.update($scope.selected).then($scope.loadAll);
+        else
+            $scope.create().then($scope.loadAll);
+    }
+
     $scope.create = function () {
-        $http.post(rootUrl, $scope.newUser);
+        return $http.post(rootUrl, $scope.selected);
     }
 
     $scope.update = function (language) {
-        $http.put(rootUrl + language._id, language);
+        return $http.put(rootUrl + language._id, language);
     }
 
     $scope.remove = function (event, language) {
@@ -31,4 +39,6 @@ app.controller("LanguageCtrl", ["$scope", "$http", function ($scope, $http) {
         });
     }
 
+    // initialize
+    $scope.loadAll();
 }]);

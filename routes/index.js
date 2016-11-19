@@ -1,5 +1,4 @@
-var express = require('express');
-var router = express.Router();
+var router = require('express').Router();
 
 // Render views
 router.get('/', function (req, res, next) {
@@ -19,12 +18,26 @@ router.get('/vocabulary', function (req, res, next) {
         title: 'Vocabulary'
     });
 });
-//asdfff
+
 router.get('/word', function (req, res, next) {
     res.render('word/index', {
         title: 'Words'
     });
 });
+
+
+router.get('/training', function (req, res, next) {
+    res.render('training', {
+        title: 'Training'
+    });
+});
+
+router.get('/grammar', function (req, res, next) {
+    res.render('grammar', {
+        title: 'Grammar'
+    });
+});
+
 
 
 module.exports = router;
