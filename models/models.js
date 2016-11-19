@@ -7,11 +7,13 @@ var UserSchema = new mongoose.Schema({
 
 var LanguageSchema = new mongoose.Schema({
   name: { type: String },
+  cultureName: { type: String },
+  cultureCode: { type: String },
   words: [{ type: mongoose.Schema.ObjectId, ref: 'word' }]
 });
 
 var VocabularySchema = new mongoose.Schema({
-  image: { type: String },
+  imageUrl: { type: String },
   words: [{ type: mongoose.Schema.ObjectId, ref: 'word' }]
 });
 

@@ -1,11 +1,11 @@
 var app = angular.module("app")
-    .service('wordService', wordService)
-    .controller("WordCtrl", wordController);
+    .service('WordService', WordService)
+    .controller("WordCtrl", WordController);
 
-wordService.$inject = ['$http'];
-wordController.$inject = ['$scope', '$http', 'wordService'];
+WordService.$inject = ['$http'];
+WordController.$inject = ['$scope', '$http', 'WordService'];
 
-function wordService($http) {
+function WordService($http) {
     var self = this;
     var rootUrl = '/api/word/';
 
@@ -33,14 +33,14 @@ function wordService($http) {
 
     self.getAudioUrl = function (word) {
         //return '/api/word/' + word._id + '/audio';
-        return '/api/audio/' + word.text;
+        return '/api/audio/' + word.language.cultureName + '/' + word.text;
     }
 };
 
-function wordController($scope, $http, wordService) {
+function WordController($scope, $http, WordService) {
 
     $scope.loadAll = function () {
-        wordService.loadAll().then(function (response) {
+        WordService.loadAll().then(function (response) {
             $scope.words = response.data;
         });
 
@@ -56,14 +56,14 @@ function wordController($scope, $http, wordService) {
     }
 
     $scope.save = function () {
-        wordService.save($scope.selected).then($scope.loadAll);
+        WordService.save($scope.selected).then($scope.loadAll);
     }
 
     $scope.remove = function (event, word) {
         event.preventDefault();
         if (!confirm('Are you sure to delete this?')) return;
 
-        wordService.remove(word).then(function (response) {
+        WordService.remove(word).then(function (response) {
             var index = $scope.words.indexOf(word);
             if (index >= 0)
                 $scope.words.splice(index, 1);
@@ -71,15 +71,15 @@ function wordController($scope, $http, wordService) {
     }
 
     $scope.getAudioUrl = function (word) {
-        return wordService.getAudioUrl(word);
+        return WordService.getAudioUrl(word);
     }
 
     $scope.playAudio = function ($event, word) {
         // var audio = $($event.target).parents('td').find('audio')[0];
         // audio && audio.play();
 
-        var audio = new Audio(wordService.getAudioUrl(word));
-        audio.onloadeddata = function (){
+        var audio = new Audio(WordService.getAudioUrl(word));
+        audio.onloadeddata = function () {
             audio.play();
         };
     }

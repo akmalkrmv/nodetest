@@ -7,15 +7,15 @@ block content
         p
             button.btn.btn-default(data-toggle="modal", data-target="#wordModal", ng-click='select({})') Add word
         
-        table.table.table-bordered
+        table.table.table-striped
             thead.thead-inverse
                 tr
                     th Text
                     th Language
-                    th Actions
+                    th.col-md-2 Actions
 
             tbody
-                tr(ng-repeat="word in words")
+                tr(ng-repeat="word in words | orderBy: ['language.name','text']")
                     td
                         button.btn.btn-primary.btn-xs(ng-click="playAudio($event, word)") 
                             span.glyphicon.glyphicon-volume-up
@@ -23,9 +23,13 @@ block content
                     td 
                         span {{word.language.name}}
                     td 
-                        a(href, data-toggle="modal", data-target="#wordModal", ng-click='select(word)') edit
+                        button.btn.btn-default.btn-xs(data-toggle="modal", data-target="#wordModal", ng-click='select(word)') 
+                            span.glyphicon.glyphicon-pencil
+                            span  Edit
                         span &nbsp
-                        a(href, ng-click='remove($event, word)') delete 
+                        button.btn.btn-danger.btn-xs(ng-click='remove($event, word)')  
+                            span.glyphicon.glyphicon-trash
+                            //- span  Delete
 
 
                                 
@@ -44,7 +48,7 @@ block content
                                 div.form-group
                                     label(for="language") Language:
                                     select.form-control(ng-model="selected.language", 
-                                                        ng-options="item as item.name for item in languages track by item")
+                                                        ng-options="item._id as item.name for item in languages track by item._id")
                                 
                     div.modal-footer
                         button.btn.btn-primary(data-dismiss="modal", ng-click='save()') Save

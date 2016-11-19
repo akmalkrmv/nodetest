@@ -2,60 +2,39 @@ var router = require('express').Router();
 var https = require("https");
 var path = require('path');
 var fs = require('fs');
+var url = require('url');
 
 var models = require("../../models/models");
-var User = models.User;
 var Word = models.Word;
-var Language = models.Language;
-var Vocabulary = models.Vocabulary;
 
 // Word
 router.get('/word/', function (req, res) {
-    Word.find().populate('language').exec(function (error, words) {
+    Word.find().populate('language').exec(function (err, words) {
+        if (err) res.send(err);
         res.json(words);
     });
 });
 
 router.get('/word/:id/', function (req, res) {
-    Word.findById(req.params.id, function (err, word) {
+    Word.findById(req.params.id).populate('language').exec(function (err, word) {
         if (err) res.send(err);
         res.json(word);
     });
 });
 
-router.get('/word/:id/audio/', function (req, res) {
-    Word.findById(req.params.id, function (err, word) {
-        var filePath = path.resolve(__dirname + '/../../public/sounds/' + word.text + '.mp3');
-        fs.exists(filePath, function (exists) {
-            if (exists)
-                res.sendFile(filePath);
-            else
-                res.status(404).end();
-        });
-    });
-});
-
-router.get('/audio/:text', function (req, res) {
-    var filePath = path.resolve(__dirname + '/../../public/sounds/' + req.params.text + '.mp3');
-    fs.exists(filePath, function (exists) {
-        if (exists)
-            res.sendFile(filePath);
-        else
-            saveAudioFile(req.params.text, function (err, path) {
-                if (err)
-                    res.status(404).end();
-                else
-                    res.sendFile(path);
-            });
-    });
-});
-
 router.post('/word/', function (req, res) {
     var word = new Word(req.body);
-    saveAudioFile(word.text);
 
     word.save(function (err, word) {
         if (err) return res.json(err);
+
+        Word.populate(word, "language", function (err, word) {
+            saveAudioFile(word.text, word.language.cultureName);
+
+            word.language.words.push(word);
+            word.language.save();
+        });
+
         res.json(word);
     });
 });
@@ -68,7 +47,7 @@ router.put('/word/:id/', function (req, res) {
         function (err, word) {
             if (err) res.send(err);
 
-            saveAudioFile(word.text);
+            saveAudioFile(word.text, word.language.cultureName);
             res.json(word);
         });
 });
@@ -82,11 +61,36 @@ router.delete('/word/:id/', function (req, res) {
     });
 });
 
-function saveAudioFile(text, callback) {
-    var audioUrl = 'https://translate.google.com/translate_tts?tl=en-us&client=tw-ob&q=' + text;
-    var audioPath = path.resolve('./public/sounds/' + text + '.mp3');
+// Getting audio file
+router.get('/audio/:cultureName/:text/', function (req, res) {
+    var text = req.params.text.toLowerCase();
+    var cultureName = req.params.cultureName;
+    var filePath = path.resolve(__dirname + '/../../public/sounds/' + cultureName + '.' + text + '.mp3');
+
+    fs.exists(filePath, function (exists) {
+        if (exists)
+            res.sendFile(filePath);
+        else
+            saveAudioFile(text, cultureName, function (err, path) {
+                if (err) res.status(404).end();
+                res.sendFile(path);
+            });
+    });
+});
+
+
+function saveAudioFile(text, cultureName, callback) {
+    if (!text) return;
+
+    cultureName = cultureName || 'en-us';
+    text = text.toLowerCase();
+
+    var audioUrl = 'https://translate.google.com/translate_tts?client=tw-ob&tl=' + cultureName + '&q=' + text;
+    var audioPath = path.resolve('./public/sounds/' + cultureName + '.' + text + '.mp3');
     var audioFile = fs.createWriteStream(audioPath);
 
+    // Todo: There is trouble with getting
+    //  russian pronounsation, need to correct that
     https.get(audioUrl, function (response) {
         response.pipe(audioFile);
 

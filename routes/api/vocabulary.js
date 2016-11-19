@@ -12,14 +12,8 @@ var Vocabulary = models.Vocabulary;
 
 // Vocabulary
 router.get('/vocabulary/', function (req, res) {
-    Vocabulary.find().lean().exec(function (err, vocabularies) {
-        for (var i in vocabularies) {
-            var vocabulary = vocabularies[i];
-            if (vocabulary.image && vocabulary.image.data) {
-                vocabulary.imageSrc = 'data:' + vocabulary.image.contentType + ';base64,' + vocabulary.image.data.toString('base64');
-            }
-        }
-
+    Vocabulary.find().populate('words').exec(function (err, vocabularies) {
+        if (err) res.send(err);
         res.json(vocabularies);
     });
 });
@@ -35,6 +29,14 @@ router.post('/vocabulary/', function (req, res) {
     var vocabulary = new Vocabulary(req.body);
     vocabulary.save(function (err, thor) {
         if (err) return res.json(err);
+
+        Vocabulary.populate(vocabulary, "words", function (err, vocabulary) {
+                vocabulary.words.forEach(function (word) {
+                    word.vocabulary = vocabulary;
+                    word.save();
+                });
+        });
+
         res.json(vocabulary);
     });
 });

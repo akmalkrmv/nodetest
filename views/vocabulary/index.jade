@@ -5,27 +5,55 @@ block content
     div.container(ng-controller="VocabularyCtrl")
         h2 Vocabulary
         p
-            a(href="/vocabulary/create") Add vocabulary
+            button.btn.btn-default(data-toggle="modal", data-target="#vocabularyModal", ng-click='select({})') Add vocabulary
         
-        table.table.table-bordered
+        table.table
             thead.thead-inverse
                 tr
-                    th Name
-                    th Image
-                    th Actions
+                    th.col-md-1.center Image
+                    th.col-md-9 Words
+                    th.col-md-2 Actions
 
             tbody
                 tr(ng-repeat="vocabulary in vocabularies")
-                    input(type="hidden", name="vocabularyId")
-                    td 
-                        label {{vocabulary.name}}
-                        input(style="display:none", value="{{vocabulary.name}}", name="name")
-                    td 
-                        image(ng-src="{{vocabulary.imageSrc}}")
-                        form(method="post", action="{{toAddImageActionUrl(vocabulary)}}", enctype="multipart/form-data")
-                            input(type="file", name="imageFile")
-                            button(type="submit") Upload image
-                    td 
-                        a(href='/vocabulary/edit/{{vocabulary._id}}') edit
+                    td.center
+                        div.pic-bl
+                            image.table-image(ng-src="{{vocabulary.imageUrl}}", src="/images/no-image.png")
+                    td
+                        ul
+                            li(ng-repeat="word in vocabulary.words") {{word.text}}
+                    td
+                        button.btn.btn-default.btn-xs(data-toggle="modal", 
+                                                      data-target="#vocabularyModal", 
+                                                      ng-click='select(vocabulary)') 
+                            span.glyphicon.glyphicon-pencil
+                            span  Edit
                         span &nbsp
-                        a(href, ng-click='remove($event, vocabulary)') delete 
+                        button.btn.btn-danger.btn-xs(ng-click='remove($event, vocabulary)')  
+                            span.glyphicon.glyphicon-trash
+                            //- span  Delete
+
+
+        div#vocabularyModal.modal.fade(role="dialog")
+            div.modal-dialog
+                div.modal-content
+                    div.modal-header
+                        button.close(type="button", data-dismiss="modal") &times;
+                        h4.modal-title Vocabulary
+                    div.modal-body
+                        div
+                            form
+                                //- div.form-group
+                                //-     label(for="text") Text:
+                                //-     input.form-control(ng-model="selected.text")
+                                div.form-group
+                                    label(for="word") Words:
+                                    select.form-control(multiple,
+                                                        style="height: 300px;",
+                                                        ng-model="selected.words",
+                                                        ng-model-options="{ updateOn: 'blur' }",  
+                                                        ng-options="item._id as item.text for item in words track by item._id")
+                                
+                    div.modal-footer
+                        button.btn.btn-primary(data-dismiss="modal", ng-click='save()') Save
+                        button.btn.btn-default(data-dismiss="modal") Close

@@ -26,4 +26,18 @@ router.get('/word', function (req, res, next) {
 });
 
 
+router.get('/training', function (req, res, next) {
+    res.render('training', {
+        title: 'Training'
+    });
+});
+
+router.get('/grammar', function (req, res, next) {
+    res.render('grammar', {
+        title: 'Grammar'
+    });
+});
+
+
+
 module.exports = router;

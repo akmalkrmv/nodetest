@@ -12,7 +12,8 @@ var Vocabulary = models.Vocabulary;
 
 // Language
 router.get('/language/', function (req, res) {
-    Language.find(function (err, languages) {
+    Language.find().populate('words').exec(function (err, languages) {
+        if (err) res.send(err);
         res.json(languages);
     });
 });
