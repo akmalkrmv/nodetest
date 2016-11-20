@@ -38,6 +38,11 @@ router.get('/grammar', function (req, res, next) {
     });
 });
 
+router.get('/auth', function(req,res,next){
+    res.render('auth',{
+        title: 'Authenticate'
+    });
+});
 
 
 module.exports = router;
