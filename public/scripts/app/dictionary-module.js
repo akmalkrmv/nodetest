@@ -1,13 +1,15 @@
+app.controller("DictionaryCtrl", ["$scope", "$http", function ($scope, $http) {}]);
+
 var app = angular.module("app")
-    .service('WordService', WordService)
-    .controller("WordCtrl", WordController);
+    .service('DictionaryService', DictionaryService)
+    .controller("DictionaryCtrl", DictionaryController);
 
-WordService.$inject = ['$http'];
-WordController.$inject = ['$scope', '$http', 'WordService'];
+DictionaryService.$inject = ['$http'];
+DictionaryController.$inject = ['$scope', '$http', 'DictionaryService'];
 
-function WordService($http) {
+function DictionaryService() {
     var self = this;
-    var rootUrl = '/api/word/';
+    var rootUrl = '/api/dictionary/';
 
     self.loadAll = function () {
         return $http.get(rootUrl);
@@ -30,22 +32,9 @@ function WordService($http) {
     self.remove = function (word) {
         return $http.delete(rootUrl + word._id);
     }
+}
 
-    self.getAudioUrl = function (word) {
-        //return '/api/word/' + word._id + '/audio';
-        return '/api/audio/' + word._id;
-    }
-
-    self.playAudio = function ($event, word) {
-        var audio = new Audio(self.getAudioUrl(word));
-        audio.onloadeddata = function () {
-            audio.play();
-        };
-    }
-};
-
-function WordController($scope, $http, WordService) {
-
+function DictionaryController($scope) {
     $scope.loadAll = function () {
         WordService.loadAll().then(function (response) {
             $scope.words = response.data;
@@ -77,9 +66,20 @@ function WordController($scope, $http, WordService) {
         });
     }
 
-    $scope.getAudioUrl =  WordService.getAudioUrl;
-    $scope.playAudio = WordService.playAudio;
+    $scope.getAudioUrl = function (word) {
+        return WordService.getAudioUrl(word);
+    }
+
+    $scope.playAudio = function ($event, word) {
+        // var audio = $($event.target).parents('td').find('audio')[0];
+        // audio && audio.play();
+
+        var audio = new Audio(WordService.getAudioUrl(word));
+        audio.onloadeddata = function () {
+            audio.play();
+        };
+    }
 
     // initialize
     $scope.loadAll();
-};
+}

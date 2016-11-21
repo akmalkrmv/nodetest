@@ -78,6 +78,26 @@ router.get('/audio/:cultureName/:text/', function (req, res) {
     });
 });
 
+router.get('/audio/:id/', function (req, res) {
+    Word.findById(req.params.id).populate('language').exec(function (err, word) {
+        if (err) res.status(404).end();
+
+        var text = word.text.toLowerCase();
+        var cultureName = word.language.cultureName;
+        var filePath = path.resolve(__dirname + '/../../public/sounds/' + cultureName + '.' + text + '.mp3');
+
+        fs.exists(filePath, function (exists) {
+            if (exists)
+                res.sendFile(filePath);
+            else
+                saveAudioFile(text, cultureName, function (err, path) {
+                    if (err) res.status(404).end();
+                    res.sendFile(path);
+                });
+        });
+    });
+});
+
 
 function saveAudioFile(text, cultureName, callback) {
     if (!text) return;

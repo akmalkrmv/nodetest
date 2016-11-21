@@ -36,4 +36,12 @@ router.get('/edit/:id', function (req, res) {
   // });
 });
 
+
+router.get('/dictionary', function (req, res, next) {
+    res.render('user/dictionary', {
+        title: 'Dictionary'
+    });
+});
+
+
 module.exports = router;

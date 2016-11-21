@@ -27,13 +27,13 @@ router.get('/word', function (req, res, next) {
 
 
 router.get('/training', function (req, res, next) {
-    res.render('training', {
+    res.render('training/index', {
         title: 'Training'
     });
 });
 
 router.get('/grammar', function (req, res, next) {
-    res.render('grammar', {
+    res.render('grammar/index', {
         title: 'Grammar'
     });
 });

@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+
+    div.container(ng-controller="VocabularyCtrl")
+        h2 My dicitonary 
+
+        table.table.table-striped.table-vertical-centered
+            thead.thead-inverse
+                tr
+                    th.col-md-1.center
+                    th.col-md-7 Words
+                    th.col-md-2 Progress
+                    th.col-md-2 Actions
+
+            tbody
+                tr(ng-repeat="vocabulary in vocabularies")
+                    td.center
+                        div.pic-bl
+                            image.table-image(ng-src="{{vocabulary.imageUrl}}", src="/images/no-image.png")
+                    td
+                        button.btn.btn-primary.btn-xs(ng-click="playAudio($event, vocabulary.words[0])") 
+                            span.glyphicon.glyphicon-volume-up
+                        span &nbsp{{getWords(vocabulary)}}
+                    td
+                        span 0
+                    td
+                        button.btn.btn-default.btn-xs(data-toggle="modal", 
+                                                      data-target="#vocabularyModal", 
+                                                      ng-click='select(vocabulary)') 
+                            span.glyphicon.glyphicon-pencil
+                            span  Edit
+                        span &nbsp
+                        button.btn.btn-danger.btn-xs(ng-click='remove($event, vocabulary)')  
+                            span.glyphicon.glyphicon-trash
+                            //- span  Delete

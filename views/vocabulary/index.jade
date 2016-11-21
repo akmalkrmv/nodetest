@@ -4,10 +4,9 @@ block content
 
     div.container(ng-controller="VocabularyCtrl")
         h2 Vocabulary
-        p
-            button.btn.btn-default(data-toggle="modal", data-target="#vocabularyModal", ng-click='select({})') Add vocabulary
+        p: button.btn.btn-default(data-toggle="modal", data-target="#vocabularyModal", ng-click='select({})') Add vocabulary
         
-        table.table
+        table.table.table-striped.table-vertical-centered
             thead.thead-inverse
                 tr
                     th.col-md-1.center Image

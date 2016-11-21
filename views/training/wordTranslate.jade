@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+
+    div.content(ng-controller="TrainingCtrl")
+        h2 {{currentTraining.name}}
+
+        div.row
+            div.col-md-6
+
+                div.training-block(ng-repeat="translates in translates")

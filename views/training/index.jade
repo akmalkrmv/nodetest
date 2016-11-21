@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+
+    div.content(ng-controller="TrainingCtrl")
+        h2 Training
+
+        div.row
+            div.col-md-6
+
+                div.trainings
+                    div.training-block(ng-repeat="training in trainings")
+                        span {{training.name}}

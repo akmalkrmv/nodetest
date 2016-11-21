@@ -31,24 +31,27 @@ app.use(function (req, res, next) {
 });
 
 // Routes
-var routes = require('./routes/index');
-var users = require('./routes/users');
-app.use('/', routes);
-app.use('/user', users);
+app.use('/', require('./routes/index'));
+app.use('/user', require('./routes/users'));
 
+// Api routes
 app.use('/api', require('./routes/api/user'));
 app.use('/api', require('./routes/api/word'));
 app.use('/api', require('./routes/api/language'));
 app.use('/api', require('./routes/api/vocabulary'));
 
 
-// Error handling
+// error handlers
+
+// catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
+// development error handler
+// will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
@@ -59,6 +62,8 @@ if (app.get('env') === 'development') {
     });
 }
 
+// production error handler
+// no stacktraces leaked to user
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {

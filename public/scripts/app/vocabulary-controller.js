@@ -1,6 +1,6 @@
 var app = angular.module("app");
 
-app.controller("VocabularyCtrl", ["$scope", "$http", function ($scope, $http) {
+app.controller("VocabularyCtrl", ["$scope", "$http", "WordService", function ($scope, $http, WordService) {
     var rootUrl = '/api/vocabulary/';
 
     $scope.loadAll = function () {
@@ -48,6 +48,16 @@ app.controller("VocabularyCtrl", ["$scope", "$http", function ($scope, $http) {
     $scope.toAddImageActionUrl = function (vocabulary) {
         return '/api/vocabulary/' + vocabulary._id + '/image/';
     };
+
+    $scope.getWords = function (vocabulary) {
+        return vocabulary.words
+            .map(function (val) {
+                return val.text;
+            })
+            .join(' - ');
+    };
+
+    $scope.playAudio = WordService.playAudio;
 
     // initialize
     $scope.loadAll();
