@@ -35,8 +35,9 @@ app.controller("AuthCtrl", ["$scope", "$http","$sessionStorage", function ($scop
     }
 
     $scope.logout = function () {
-        $scope.storage.$reset();
-        console.log($scope.storage.sessionId);
+        if (confirm('Do you want to sign out?')) {
+            $scope.storage.$reset();
+        }
     }
 
 }]);
