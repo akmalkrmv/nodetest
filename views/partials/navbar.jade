@@ -17,7 +17,30 @@ nav.navbar.navbar-inverse.navbar-fixed-top( role="navigation" )
                 ul.dropdown-menu( role="menu" )
                     li: a( href="/user" ) Users
                     li.divider
-                    //- li.dropdown-header Nav header
                     li: a( href="/language" ) Languages
                     li: a( href="/vocabulary" ) Vocabulary 
                     li: a( href="/word" ) Words
+        ul.nav.navbar-nav.navbar-right
+            li 
+                a(style="right:100px", href="#" data-toggle="modal" data-target="#authModal") Login
+
+div#authModal.modal.fade(tabindex="-1" role="dialog", ng-controller="AuthCtrl")
+    div.modal-dialog.modam-sm(role="document")
+        div.modal-content
+            div.modal-header  
+                button.close(type="button",data-dismiss="modal" aria-label="Close")
+                    span(aria-hidden="true") &times;
+            div.modal-body
+                        div
+                            form
+                                div.form-group
+                                    label Username:
+                                    input.form-control(type="text", ng-model="username")
+                                div.form-group
+                                    label Password:
+                                    input#email.form-control(type="password", ng-model="password")
+                                div.row(style="text-align:center")
+                                    div.col-md-2
+                                        input.btn.btn-primary(type="button", value="Sign in", ng-click="login()")
+
+                                
