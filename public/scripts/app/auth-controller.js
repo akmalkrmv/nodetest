@@ -1,6 +1,6 @@
 var app = angular.module("app");
 
-app.controller("AuthCtrl", ["$scope", "$http","$sessionStorage", function ($scope, $http, $sessionStorage) {
+app.controller("AuthCtrl", ["$scope", "$http", "$sessionStorage", function ($scope, $http, $sessionStorage) {
     var rootUrl = '/api/auth/';
     $scope.storage = $sessionStorage;
 
@@ -10,28 +10,26 @@ app.controller("AuthCtrl", ["$scope", "$http","$sessionStorage", function ($scop
     $scope.$watch('cookies', function (val) {
         if (!val) return;
         $scope.cookieId = val.get('id');
-        console.log( $scope.cookieId);
+        console.log($scope.cookieId);
     });
 
     $scope.login = function () {
         $http({
-            method: 'POST',
-            url: rootUrl,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            data: 'username=' + $scope.username + '&password=' + $scope.password
-        })
-        .success(function (response) {
-            if (response.success) {
+                method: 'POST',
+                url: rootUrl,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: 'username=' + $scope.username + '&password=' + $scope.password
+            })
+            .success(function (response) {
                 var sessionId = response.id;
                 $('#authModal').modal('toggle');
                 $scope.storage.sessionId = sessionId;
-
-            } else {
-                console.log("fail");
-            }
-        });
+            })
+            .error(function (data) {
+                console.log(data);
+            });
     }
 
     $scope.logout = function () {

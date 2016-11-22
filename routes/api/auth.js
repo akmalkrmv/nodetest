@@ -14,22 +14,23 @@ router.post('/auth/', function (req, res) {
     }, function (err, user) {
         if (err) throw err;
         if (!user) {
-            res.json({
-                username: req.body.username,
-                success: false,
-                message: 'Authentication failed. User not found.'
+            res
+            .status(404)
+            .json({
+                message: 'Authentication failed. User not found.',
             });
         } else if (user) {
             if (user.password != req.body.password) {
-                res.json({
-                    success: false,
+                res
+                .status(422)
+                .json({
                     message: 'Authentication failed. Wrong password.'
                 });
             } else {
                 var token = jwt.sign(user, 'shhhhh');
-                res.json({
+                res
+                .json({
                     id: user._id,
-                    success: true,
                     token: token
                 });
             }
