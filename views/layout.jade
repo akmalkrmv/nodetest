@@ -5,11 +5,13 @@ html()
     title= title + ' - NodeTest'
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+    link(rel='stylesheet', href='/stylesheets/toastr.min.css')
 
     script(src="/scripts/libs/jquery.js")
     script(src="/scripts/libs/angular.min.js")
     script(src="/scripts/libs/bootstrap.min.js")
     script(src="/scripts/libs/ngStorage.js")
+    script(src="/scripts/libs/toastr.min.js")
     
     script(src="/scripts/app/app.js")
     script(src="/scripts/app/user-controller.js")
@@ -17,7 +19,28 @@ html()
     script(src="/scripts/app/language-controller.js")
     script(src="/scripts/app/vocabulary-controller.js")
     script(src="/scripts/app/auth-controller.js")
+    
   body(ng-app="app")
     include partials/navbar.jade
     div.container
       block content
+
+
+script.
+  toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+  }

@@ -26,9 +26,13 @@ app.controller("AuthCtrl", ["$scope", "$http", "$sessionStorage", function ($sco
                 var sessionId = response.id;
                 $('#authModal').modal('toggle');
                 $scope.storage.sessionId = sessionId;
+                toastr.success('Hello ' + $scope.username, 'You were logged in successfully.');
             })
-            .error(function (data) {
+            .error(function (data, status) {
                 console.log(data);
+                $("#passwordLabel").empty();
+                $("#usernameLabel").empty();
+                status == 422 ? $("#passwordLabel").text(data.message) : $("#usernameLabel").text(data.message);
             });
     }
 
@@ -37,5 +41,4 @@ app.controller("AuthCtrl", ["$scope", "$http", "$sessionStorage", function ($sco
             $scope.storage.$reset();
         }
     }
-
 }]);

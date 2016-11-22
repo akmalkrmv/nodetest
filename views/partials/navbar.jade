@@ -30,21 +30,22 @@ div(ng-controller="AuthCtrl")
     div#authModal.modal.fade(tabindex="-1" role="dialog" )
         div.modal-dialog.modam-sm(role="document")
             div.modal-content
-                div.modal-header  
+                div.modal-header Sign in form 
                     button.close(type="button",data-dismiss="modal" aria-label="Close")
                         span(aria-hidden="true") &times;
                 div.modal-body
-                            div
-                                form
-                                    div.form-group
-                                        label Username:
-                                        input.form-control(type="text", ng-model="username")
-                                    div.form-group
-                                        label Password:
-                                        input#email.form-control(type="password", ng-model="password")
-                                    
-                                    div.row(style="text-align:center")
-                                        div.col-md-2
-                                            input.btn.btn-primary(type="button", value="Sign in", ng-click="login()")
+                    form
+                        div.form-group
+                            label Username:
+                            input.form-control(type="text", ng-model="username")
+                            label.text-warning#usernameLabel                   
+                        div.form-group
+                            label Password:
+                            input#email.form-control(type="password", ng-model="password")
+                            label.text-warning#passwordLabel 
+                div.modal-footer
+                    input.btn.btn-primary(type="button", value="Sign in", ng-click="login()")
+                    input.btn.btn-default(type="button", value="Cancel", data-dismiss="modal")
+                             
 
                                 
