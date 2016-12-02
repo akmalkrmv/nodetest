@@ -3,6 +3,8 @@ var mongoose = require("mongoose");
 var UserSchema = new mongoose.Schema({
   username: { type: String },
   email: { type: String },
+  password: {type: String},
+  role: {type: String},
   dictionary: [{ type: mongoose.Schema.ObjectId, ref: 'dictionary' }]
 });
 
@@ -15,6 +17,7 @@ var LanguageSchema = new mongoose.Schema({
 
 var VocabularySchema = new mongoose.Schema({
   imageUrl: { type: String },
+  category: { type: mongoose.Schema.ObjectId, ref: 'category' },
   words: [{ type: mongoose.Schema.ObjectId, ref: 'word' }]
 });
 
@@ -24,6 +27,13 @@ var WordSchema = new mongoose.Schema({
   language: { type: mongoose.Schema.ObjectId, ref: 'language' },
   vocabulary: { type: mongoose.Schema.ObjectId, ref: 'vocabulary' }
 });
+
+
+var CategorySchema = new mongoose.Schema({
+  text: { type: String },
+  vocabularies: [{ type: mongoose.Schema.ObjectId, ref: 'vocabulary' }]
+});
+
 
 var DicitonarySchema = new mongoose.Schema({
   progress: { type: Number }, 
@@ -35,13 +45,15 @@ var DicitonarySchema = new mongoose.Schema({
 var User = mongoose.model('user', UserSchema);
 var Word = mongoose.model('word', WordSchema);
 var Language = mongoose.model('language', LanguageSchema);
+var Category = mongoose.model('category', CategorySchema);
 var Vocabulary = mongoose.model('vocabulary', VocabularySchema);
 var Dictionary = mongoose.model('dictionary', DicitonarySchema);
 
-
 module.exports = {
   User: User,
+  Word: Word,
   Language: Language,
+  Category: Category,
   Vocabulary: Vocabulary,
-  Word: Word
+  Dictionary: Dictionary,
 }

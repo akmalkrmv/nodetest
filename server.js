@@ -6,7 +6,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var busboy = require('connect-busboy'); //middleware for form/file upload
+var multiparty = require('connect-multiparty');
+var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose'); //used for database connections
+
 
 // initialize conection
 mongoose.connect('localhost:27017/nodetest');
@@ -19,9 +22,8 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(busboy());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/fonts/', express.static(path.join(__dirname, 'public/fonts')));
 
@@ -33,13 +35,16 @@ app.use(function (req, res, next) {
 // Routes
 app.use('/', require('./routes/index'));
 app.use('/user', require('./routes/users'));
+app.use('/audio', require('./routes/audio'));
+app.use('/image', require('./routes/image'));
 
 // Api routes
+app.use('/api', require('./routes/api/auth'));
 app.use('/api', require('./routes/api/user'));
 app.use('/api', require('./routes/api/word'));
 app.use('/api', require('./routes/api/language'));
+app.use('/api', require('./routes/api/category'));
 app.use('/api', require('./routes/api/vocabulary'));
-
 
 // error handlers
 

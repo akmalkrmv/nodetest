@@ -32,8 +32,7 @@ function WordService($http) {
     }
 
     self.getAudioUrl = function (word) {
-        //return '/api/word/' + word._id + '/audio';
-        return '/api/audio/' + word._id;
+        return '/audio/word/' + word._id;
     }
 
     self.playAudio = function ($event, word) {
@@ -77,7 +76,7 @@ function WordController($scope, $http, WordService) {
         });
     }
 
-    $scope.getAudioUrl =  WordService.getAudioUrl;
+    $scope.getAudioUrl = WordService.getAudioUrl;
     $scope.playAudio = WordService.playAudio;
 
     // initialize

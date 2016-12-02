@@ -12,16 +12,23 @@ var Vocabulary = models.Vocabulary;
 
 // User
 router.get('/user/', function (req, res) {
-    User.find(function (err, users) {
-        res.json(users);
-    });
+    User
+        .find()
+        .populate('dictionary')
+        .exec(function (err, users) {
+            if (err) res.send(err);
+            res.json(users);
+        });
 });
 
 router.get('/user/:id/', function (req, res) {
-    User.findById(req.params.id, function (err, user) {
-        if (err) res.send(err);
-        res.json(user);
-    });
+    User
+        .findById(req.params.id)
+        .populate('dictionary')
+        .exec(function (err, user) {
+            if (err) res.send(err);
+            res.json(user);
+        });
 });
 
 router.post('/user/', function (req, res) {

@@ -1,13 +1,11 @@
-app.controller("DictionaryCtrl", ["$scope", "$http", function ($scope, $http) {}]);
-
 var app = angular.module("app")
     .service('DictionaryService', DictionaryService)
     .controller("DictionaryCtrl", DictionaryController);
 
 DictionaryService.$inject = ['$http'];
-DictionaryController.$inject = ['$scope', '$http', 'DictionaryService'];
+DictionaryController.$inject = ['$scope', '$http', 'DictionaryService', 'WordService'];
 
-function DictionaryService() {
+function DictionaryService($http) {
     var self = this;
     var rootUrl = '/api/dictionary/';
 
@@ -34,17 +32,11 @@ function DictionaryService() {
     }
 }
 
-function DictionaryController($scope) {
+function DictionaryController($scope, $http, DictionaryService, WordService) {
     $scope.loadAll = function () {
         WordService.loadAll().then(function (response) {
             $scope.words = response.data;
         });
-
-        if (!$scope.languages) {
-            $http.get("/api/language/").then(function (response) {
-                $scope.languages = response.data;
-            });
-        }
     }
 
     $scope.select = function (item) {
@@ -61,8 +53,7 @@ function DictionaryController($scope) {
 
         WordService.remove(word).then(function (response) {
             var index = $scope.words.indexOf(word);
-            if (index >= 0)
-                $scope.words.splice(index, 1);
+            if (index >= 0) $scope.words.splice(index, 1);
         });
     }
 
@@ -70,16 +61,38 @@ function DictionaryController($scope) {
         return WordService.getAudioUrl(word);
     }
 
-    $scope.playAudio = function ($event, word) {
-        // var audio = $($event.target).parents('td').find('audio')[0];
-        // audio && audio.play();
+    $scope.playAudio = WordService.playAudio;
 
-        var audio = new Audio(WordService.getAudioUrl(word));
-        audio.onloadeddata = function () {
-            audio.play();
-        };
+    $scope.convertTopics = function () {
+        var $topic = $('.topic');
+        convertTopicElements($topic);
+    }
+
+    function convertTopicElements($topicElement) {
+        var $childElements = $topicElement.children();
+        if ($childElements.length) {
+            for (var i = 0; i < $childElements.length; i++) {
+                var $element = $($childElements[i]);
+                if ($element.text())
+                    $element = convertTopicElements($element);
+                else return $element;
+            }
+        }
+
+        var $newElement = $(document.createElement($topicElement.get(0).nodeName));
+        var words = $topicElement.text().split(' ');
+
+        for (var i = 0; i < words.length; i++) {
+            var word = words[i];
+            var $span = $('<span class="topic-word">').text(word);
+            $newElement.append($span, ' ');
+        }
+
+        $topicElement.replaceWith($newElement);
+        return $newElement;
     }
 
     // initialize
     $scope.loadAll();
+    $scope.convertTopics();
 }

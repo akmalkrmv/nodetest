@@ -1,0 +1,23 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    // Controls if the editor should automatically format the line after typing
+    "editor.formatOnType": true, 
+
+    // Controls whether snippets are shown with other suggestions and how they are sorted.
+    "editor.snippetSuggestions": "inline",
+
+    // Insert snippets when their prefix matches. Works best when 'quickSuggestions' aren't enabled.
+    "editor.tabCompletion": true,
+
+    // Zoom the font of the editor when using mouse wheel and holding Ctrl
+    "editor.mouseWheelZoom": true,
+
+    // Controls how the editor should render whitespace characters, posibilties are 'none', 'boundary', and 'all'. The 'boundary' option does not render single spaces between words.
+    "editor.renderWhitespace": "boundary",
+
+    // Controls if the explorer should automatically reveal files when opening them.
+    "explorer.autoReveal": false,
+
+    // Controls the visibility of the status bar at the bottom of the workbench.
+    "workbench.statusBar.visible": false
+}

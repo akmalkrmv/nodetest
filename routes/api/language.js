@@ -1,28 +1,26 @@
 var router = require('express').Router();
-var https = require("https");
-var path = require('path');
-var fs = require('fs');
-
 var models = require("../../models/models");
-var User = models.User;
-var Word = models.Word;
 var Language = models.Language;
-var Vocabulary = models.Vocabulary;
-
 
 // Language
 router.get('/language/', function (req, res) {
-    Language.find().populate('words').exec(function (err, languages) {
-        if (err) res.send(err);
-        res.json(languages);
-    });
+    Language
+        .find()
+        .populate('words')
+        .exec(function (err, languages) {
+            if (err) res.send(err);
+            res.json(languages);
+        });
 });
 
 router.get('/language/:id/', function (req, res) {
-    Language.findById(req.params.id, function (err, language) {
-        if (err) res.send(err);
-        res.json(language);
-    });
+    Language
+        .findById(req.params.id)
+        .populate('words')
+        .exec(function (err, language) {
+            if (err) res.send(err);
+            res.json(language);
+        });
 });
 
 router.post('/language/', function (req, res) {

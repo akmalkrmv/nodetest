@@ -4,8 +4,8 @@ block content
 
     div.container(ng-controller="LanguageCtrl")
         h2 Languages
-         p
-            button.btn.btn-default(data-toggle="modal", data-target="#languageModal", ng-click='select({})') Add language
+            p
+                button.btn.btn-default(data-toggle="modal", data-target="#languageModal", ng-click='select({})') Add language
         
         table.table.table-bordered
             thead.thead-inverse
@@ -22,7 +22,7 @@ block content
                         label {{language.cultureName}}
                     td  
                         a(href, data-toggle="modal", data-target="#languageModal", ng-click='select(language)') edit
-                        span &nbsp
+                        span &nbsp;
                         a(href, ng-click='remove($event, language)') delete 
 
 

@@ -1,8 +1,5 @@
 var app = angular.module("app");
 
-// ahaha tut prikol, toje pereputal s nodejs, dolbanniy js 
-// var User = require("../models/User").User;
-
 var User = function (username, email) {
     var self = this;
 

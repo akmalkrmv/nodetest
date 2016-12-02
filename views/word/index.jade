@@ -19,14 +19,14 @@ block content
                     td
                         button.btn.btn-primary.btn-xs(ng-click="playAudio($event, word)") 
                             span.glyphicon.glyphicon-volume-up
-                        span &nbsp{{word.text}}
+                        span &nbsp;{{word.text}}
                     td 
                         span {{word.language.name}}
                     td 
                         button.btn.btn-default.btn-xs(data-toggle="modal", data-target="#wordModal", ng-click='select(word)') 
                             span.glyphicon.glyphicon-pencil
                             span  Edit
-                        span &nbsp
+                        span &nbsp;
                         button.btn.btn-danger.btn-xs(ng-click='remove($event, word)')  
                             span.glyphicon.glyphicon-trash
                             //- span  Delete

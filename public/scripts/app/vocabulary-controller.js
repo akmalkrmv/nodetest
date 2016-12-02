@@ -1,65 +1,149 @@
-var app = angular.module("app");
+var app = angular.module("app")
+    .service('VocabularyService', VocabularyService)
+    .controller("VocabularyCtrl", VocabularyController);
 
-app.controller("VocabularyCtrl", ["$scope", "$http", "WordService", function ($scope, $http, WordService) {
+VocabularyService.$inject = ['$http'];
+VocabularyController.$inject = [
+    '$scope',
+    'VocabularyService',
+    'WordService',
+    'CategoryService'
+];
+
+function VocabularyService($http) {
+    var self = this;
     var rootUrl = '/api/vocabulary/';
 
-    $scope.loadAll = function () {
-        $http.get(rootUrl).then(function (response) {
-            $scope.vocabularies = response.data;
-        });
-
-        if (!$scope.words) {
-            $http.get("/api/word/").then(function (response) {
-                $scope.words = response.data;
-            });
-        }
+    self.loadAll = function () {
+        return $http.get(rootUrl);
     }
 
-    $scope.select = function (item) {
-        $scope.selected = item;
+    self.save = function (model) {
+        return model._id ?
+            self.update(model) :
+            self.create(model);
     }
 
-    $scope.save = function () {
-        if ($scope.selected && $scope.selected._id)
-            $scope.update($scope.selected).then($scope.loadAll);
-        else
-            $scope.create().then($scope.loadAll);
+    self.create = function (model) {
+        return $http.post(rootUrl, model);
     }
 
-    $scope.create = function () {
-        return $http.post(rootUrl, $scope.selected);
+    self.update = function (model) {
+        return $http.put(rootUrl + model._id, model);
     }
 
-    $scope.update = function (vocabulary) {
-        return $http.put(rootUrl + vocabulary._id, vocabulary);
+    self.remove = function (model) {
+        return $http.delete(rootUrl + model._id);
     }
 
-    $scope.remove = function (event, vocabulary) {
-        event.preventDefault();
-        if (!confirm('Are you sure to delete this?')) return;
-
-        $http.delete(rootUrl + vocabulary._id).then(function (response) {
-            var index = $scope.vocabularies.indexOf(vocabulary);
-            if (index >= 0)
-                $scope.vocabularies.splice(index, 1);
-        });
-    }
-
-    $scope.toAddImageActionUrl = function (vocabulary) {
-        return '/api/vocabulary/' + vocabulary._id + '/image/';
-    };
-
-    $scope.getWords = function (vocabulary) {
+    self.getWords = function (vocabulary) {
         return vocabulary.words
             .map(function (val) {
                 return val.text;
             })
             .join(' - ');
     };
+    self.getImageUrl = function (vocabulary) {
+        if (!vocabulary || !vocabulary.imageUrl)
+            return '/images/no-image.png';
+        return vocabulary.imageUrl;
+    };
 
+    self.setImage = function (vocabulary, file) {
+        var url = '/image/vocabulary/' + vocabulary._id;
+        var formData = new FormData();
+        formData.append('file', file);
+
+        var postOptions = {
+            headers: {
+                'Content-Type': undefined
+            }
+        };
+
+        return $http.post(url, formData, postOptions);
+    };
+    self.removeImage = function (vocabulary) {
+        return $http.delete('/image/vocabulary/' + vocabulary._id);
+    }
+}
+
+function VocabularyController($scope, VocabularyService, WordService, CategoryService) {
+    var rootUrl = '/api/vocabulary/';
+
+    $scope.showImages = true;
+
+    $scope.loadAll = function () {
+        VocabularyService.loadAll().then(function (response) {
+            $scope.vocabularies = response.data;
+        });
+    }
+    $scope.loadWords = function () {
+        WordService.loadAll().then(function (response) {
+            $scope.words = response.data;
+        });
+    }
+    $scope.loadCategories = function () {
+        CategoryService.getAll().then(function (response) {
+            $scope.categories = response.data;
+        });
+    }
+
+    $scope.select = function (item) {
+        $scope.selected = item;
+    }
+    $scope.save = function () {
+        WordService.save($scope.selected).then($scope.loadAll);
+    }
+    $scope.remove = function (event, word) {
+        event.preventDefault();
+        if (!confirm('Are you sure to delete this?')) return;
+
+        VocabularyService.remove(vocabulary).then(function (response) {
+            var index = $scope.vocabularies.indexOf(vocabulary);
+            if (index >= 0) $scope.vocabularies.splice(vocabulary, 1);
+        });
+    }
+
+    $scope.openFileInput = function ($event) {
+        $($event.target).parent().find('input').click();
+    }
+
+    $scope.setFile = function (fileInputElement) {
+        var file = fileInputElement.files[0];
+        if (!file) return;
+
+        if (this.vocabulary)
+            $scope.selected = this.vocabulary;
+
+        VocabularyService
+            .setImage($scope.selected, file)
+            .then(console.log, console.error);
+
+        $scope.previewImage(file);
+    }
+
+    $scope.previewImage = function (file) {
+        var fileReader = new FileReader();
+        fileReader.onload = function () {
+            $scope.selected.imageUrl = fileReader.result;
+        };
+        fileReader.readAsDataURL(file);
+    }
+
+    $scope.removeImage = function (vocabulary) {
+        VocabularyService
+            .removeImage(vocabulary)
+            .then(function () {
+                vocabulary.imageUrl = null;
+            }, console.error);
+    }
+
+    $scope.getWords = VocabularyService.getWords;
+    $scope.getImageUrl = VocabularyService.getImageUrl;
     $scope.playAudio = WordService.playAudio;
 
     // initialize
     $scope.loadAll();
-
-}]);
+    $scope.loadWords();
+    $scope.loadCategories();
+}

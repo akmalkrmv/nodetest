@@ -9,29 +9,35 @@ block content
         table.table.table-striped.table-vertical-centered
             thead.thead-inverse
                 tr
-                    th.col-md-1.center Image
-                    th.col-md-9 Words
+                    th.col-md-1.center
+                    th.col-md-7 Words
+                    th.col-md-2 Category
                     th.col-md-2 Actions
 
             tbody
                 tr(ng-repeat="vocabulary in vocabularies")
                     td.center
-                        div.pic-bl
-                            image.table-image(ng-src="{{vocabulary.imageUrl}}", src="/images/no-image.png")
+                        div.table-image
+                            image(ng-src="{{getImageUrl(vocabulary)}}", ng-click="openFileInput($event)")
+                            input(type="file", style="display: none", 
+                                  onchange="angular.element(this).scope().setFile(this)")
+                            
                     td
                         ul
                             li(ng-repeat="word in vocabulary.words") {{word.text}}
                     td
-                        button.btn.btn-default.btn-xs(data-toggle="modal", 
-                                                      data-target="#vocabularyModal", 
-                                                      ng-click='select(vocabulary)') 
-                            span.glyphicon.glyphicon-pencil
-                            span  Edit
-                        span &nbsp
-                        button.btn.btn-danger.btn-xs(ng-click='remove($event, vocabulary)')  
-                            span.glyphicon.glyphicon-trash
-                            //- span  Delete
-
+                        span {{vocabulary.category.text}}
+                    td
+                        //- button.btn.btn-default.btn-xs(data-toggle="modal", 
+                        //-                               data-target="#vocabularyModal", 
+                        //-                               ng-click='select(vocabulary)') 
+                        //-     span.glyphicon.glyphicon-pencil
+                        //-     span  Edit
+                        edit-button
+                        span &nbsp;
+                        delete-button
+                        //- button.btn.btn-danger.btn-xs(ng-click='remove($event, vocabulary)')  
+                        //-     span.glyphicon.glyphicon-trash
 
         div#vocabularyModal.modal.fade(role="dialog")
             div.modal-dialog
@@ -40,18 +46,32 @@ block content
                         button.close(type="button", data-dismiss="modal") &times;
                         h4.modal-title Vocabulary
                     div.modal-body
-                        div
-                            form
-                                //- div.form-group
-                                //-     label(for="text") Text:
-                                //-     input.form-control(ng-model="selected.text")
-                                div.form-group
-                                    label(for="word") Words:
-                                    select.form-control(multiple,
-                                                        style="height: 300px;",
-                                                        ng-model="selected.words",
-                                                        ng-model-options="{ updateOn: 'blur' }",  
-                                                        ng-options="item._id as item.text for item in words track by item._id")
+                        form
+                            div.row
+                                div.col-md-8
+                                    div.form-group
+                                        label(for="category") Category:
+                                        select.form-control(ng-model="selected.category", 
+                                                            ng-options="item._id as item.text for item in categories track by item._id")
+                                    
+                                    div.form-group
+                                        label(for="word") Words:
+                                        select.form-control(multiple,
+                                                            style="height: 200px;",
+                                                            ng-model="selected.words",
+                                                            ng-model-options="{ updateOn: 'blur' }",  
+                                                            ng-options="item._id as item.text for item in words track by item._id")
+                                div.col-md-4(ng-show="selected._id")
+                                    div.form-group
+                                        p: label Select image:
+                                        div.form-image
+                                            image(ng-src="{{getImageUrl(selected)}}",
+                                                  ng-click="openFileInput($event)")
+                                            input(type="file", style="display: none", 
+                                                onchange="angular.element(this).scope().setFile(this)")
+                                        p(ng-show="selected.imageUrl")
+                                            a(href, ng-click="removeImage(selected)") remove image
+                                                         
                                 
                     div.modal-footer
                         button.btn.btn-primary(data-dismiss="modal", ng-click='save()') Save

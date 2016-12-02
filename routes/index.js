@@ -19,6 +19,12 @@ router.get('/vocabulary', function (req, res, next) {
     });
 });
 
+router.get('/category', function (req, res, next) {
+    res.render('category/index', {
+        title: 'Categories'
+    });
+});
+
 router.get('/word', function (req, res, next) {
     res.render('word/index', {
         title: 'Words'
@@ -38,6 +44,11 @@ router.get('/grammar', function (req, res, next) {
     });
 });
 
+router.get('/auth', function(req,res,next){
+    res.render('auth',{
+        title: 'Authenticate'
+    });
+});
 
 
 module.exports = router;
