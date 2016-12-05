@@ -5,6 +5,7 @@ html()
     title= title + ' - NodeTest'
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+    link(rel='stylesheet', href='/stylesheets/toastr.min.css')
 
     script(src="/scripts/libs/jquery.js")
     script(src="/scripts/libs/bootstrap.min.js")
@@ -32,4 +33,23 @@ html()
     footer.footer 
       hr
       div.container
-        p.text-muted Â© 2016 NoteTest. All Rights Super Duper Reserved.
+        p.text-muted © 2016 NoteTest. All Rights Super Duper Reserved.
+
+script.
+  toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+  }
