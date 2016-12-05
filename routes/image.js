@@ -24,6 +24,7 @@ router.post('/vocabulary/:id', function (req, res) {
         var form = new multiparty.Form();
         form.on("part", function (part) {
             if (part.filename) {
+
                 var extension = path.extname(part.filename);
                 var imagePath = path.resolve('./public/images/' + vocabulary._id);
                 var imageFile = fs.createWriteStream(imagePath);

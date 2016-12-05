@@ -6,7 +6,13 @@ var Vocabulary = models.Vocabulary;
 router.get('/vocabulary/', function (req, res) {
     Vocabulary
         .find()
-        .populate('words')
+        .populate({
+            path: 'words',
+            populate: {
+                path: 'language',
+                model: 'language'
+            }
+        })
         .populate('category')
         .exec(function (err, data) {
             if (err) res.send(err);

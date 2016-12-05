@@ -13,6 +13,11 @@ router.get('/word/', function (req, res) {
     Word
         .find()
         .populate('language')
+
+        .limit(req.query.limit)
+        .skip(req.query.skip)
+        .sort(req.query.sort)
+
         .exec(function (err, words) {
             if (err) res.send(err);
             res.json(words);

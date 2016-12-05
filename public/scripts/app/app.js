@@ -1,48 +1,52 @@
-var app = angular.module("app", ['ngStorage']);
+var app = angular
+    .module("app", ['ngStorage', 'angular.filter'])
 
-app.factory('httpRequestInterceptor', function ($q, $localStorage) {
-    return {
-        request: function (config) {
-            var token = $localStorage.token;
-
-            if (token) {
-                config.headers['x-access-token'] = token;
+.config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push('httpTokenProvider');
+    }])
+    .factory('httpTokenProvider', function ($q, $localStorage) {
+        return {
+            request: function (config) {
+                var token = $localStorage.token;
+                if (token) {
+                    config.headers['x-access-token'] = token;
+                }
+                // We can add token only for api  
+                // var apiPattern = /\/api\//;
+                // if (token && apiPattern.test(config.url)) {
+                //     config.headers['x-access-token'] = token;
+                // }
+                return config || $q.when(config);
             }
+        };
+    })
 
-            // We can add token only for api  
-            // var apiPattern = /\/api\//;
-            // if (token && apiPattern.test(config.url)) {
-            //     config.headers['x-access-token'] = token;
-            // }
-
-            return config || $q.when(config);
+.directive('editButton', function () {
+        return {
+            restrict: 'E',
+            replace: true,
+            transclude: true,
+            scope: {
+                modal: '@',
+                action: '&',
+            },
+            template: '<button ng-click="action()" data-toggle="modal" data-target="{{modal}}" class="btn btn-default btn-xs">' +
+                '<span class="glyphicon glyphicon-pencil"></span>&nbsp;' +
+                '<span ng-transclude/>' +
+                '</button>'
         }
-    };
-});
-
-
-app.config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push('httpRequestInterceptor');
-}]);
-
-
-app.directive('editButton', function () {
-    return {
-        restrict: 'E',
-        replace: true,
-        template: '<button data-toggle="modal" data-target="#vocabularyModal" ng-click="select(vocabulary)" class="btn btn-default btn-xs">' +
-            '<span class="glyphicon glyphicon-pencil"></span>' +
-            '<span> Edit</span>' +
-            '</button>'
-    }
-});
-app.directive('deleteButton', function () {
-    return {
-        restrict: 'E',
-        replace: true,
-        transclude: true,
-        template: '<button ng-click="remove($event, category)" class="btn btn-danger btn-xs">' +
-            '<span class="glyphicon glyphicon-trash"></span> <span ng-transclude/>' +
-            '</button>'
-    }
-});
+    })
+    .directive('deleteButton', function () {
+        return {
+            restrict: 'E',
+            replace: true,
+            transclude: true,
+            scope: {
+                action: '&',
+            },
+            template: '<button ng-click="action()" class="btn btn-danger btn-xs">' +
+                '<span class="glyphicon glyphicon-trash"></span>' +
+                '<span ng-transclude/>' +
+                '</button>'
+        }
+    });

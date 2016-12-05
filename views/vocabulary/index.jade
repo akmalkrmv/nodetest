@@ -5,7 +5,7 @@ block content
     div.container(ng-controller="VocabularyCtrl")
         h2 Vocabulary
         p: button.btn.btn-default(data-toggle="modal", data-target="#vocabularyModal", ng-click='select({})') Add vocabulary
-        
+
         table.table.table-striped.table-vertical-centered
             thead.thead-inverse
                 tr
@@ -15,29 +15,20 @@ block content
                     th.col-md-2 Actions
 
             tbody
-                tr(ng-repeat="vocabulary in vocabularies")
+                tr(ng-repeat="vocabulary in vocabularies | orderBy: 'category.text'")
                     td.center
                         div.table-image
                             image(ng-src="{{getImageUrl(vocabulary)}}", ng-click="openFileInput($event)")
                             input(type="file", style="display: none", 
                                   onchange="angular.element(this).scope().setFile(this)")
-                            
                     td
-                        ul
-                            li(ng-repeat="word in vocabulary.words") {{word.text}}
+                        ul: li(ng-repeat="word in vocabulary.words") {{word.language.name}}: {{word.text}}
                     td
                         span {{vocabulary.category.text}}
                     td
-                        //- button.btn.btn-default.btn-xs(data-toggle="modal", 
-                        //-                               data-target="#vocabularyModal", 
-                        //-                               ng-click='select(vocabulary)') 
-                        //-     span.glyphicon.glyphicon-pencil
-                        //-     span  Edit
-                        edit-button
+                        edit-button(modal='#vocabularyModal', action='select(vocabulary)') Edit
                         span &nbsp;
-                        delete-button
-                        //- button.btn.btn-danger.btn-xs(ng-click='remove($event, vocabulary)')  
-                        //-     span.glyphicon.glyphicon-trash
+                        delete-button(action='remove(vocabulary)')
 
         div#vocabularyModal.modal.fade(role="dialog")
             div.modal-dialog
@@ -56,7 +47,7 @@ block content
                                     
                                     div.form-group
                                         label(for="word") Words:
-                                        select.form-control(multiple,
+                                        select.multiselect.form-control(multiple,
                                                             style="height: 200px;",
                                                             ng-model="selected.words",
                                                             ng-model-options="{ updateOn: 'blur' }",  
@@ -68,11 +59,10 @@ block content
                                             image(ng-src="{{getImageUrl(selected)}}",
                                                   ng-click="openFileInput($event)")
                                             input(type="file", style="display: none", 
-                                                onchange="angular.element(this).scope().setFile(this)")
+                                                  onchange="angular.element(this).scope().setFile(this)")
                                         p(ng-show="selected.imageUrl")
                                             a(href, ng-click="removeImage(selected)") remove image
-                                                         
-                                
+
                     div.modal-footer
                         button.btn.btn-primary(data-dismiss="modal", ng-click='save()') Save
                         button.btn.btn-default(data-dismiss="modal") Close

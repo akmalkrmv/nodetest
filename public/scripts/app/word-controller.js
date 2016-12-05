@@ -9,8 +9,14 @@ function WordService($http) {
     var self = this;
     var rootUrl = '/api/word/';
 
+    self.query = {
+        limit: 5
+    };
+
     self.loadAll = function () {
-        return $http.get(rootUrl);
+        return $http.get(rootUrl, {
+            params: self.query
+        });
     }
 
     self.save = function (word) {
@@ -74,6 +80,22 @@ function WordController($scope, $http, WordService) {
             if (index >= 0)
                 $scope.words.splice(index, 1);
         });
+    }
+
+    $scope.orderBy = function ($event, order) {
+        var $element = $($event.target);
+        if (WordService.query.sort == order) {
+            order = '-' + order;
+            //$element.addClass('glyphicon-triangle-bottom');
+        }
+
+        WordService.query.sort = order;
+        $scope.loadAll();
+    }
+
+    $scope.goToPage = function (pageNum) {
+        WordService.query.skip = pageNum * WordService.query.limit;
+        $scope.loadAll();
     }
 
     $scope.getAudioUrl = WordService.getAudioUrl;

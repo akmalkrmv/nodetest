@@ -10,12 +10,14 @@ block content
         table.table.table-striped.table-vertical-centered
             thead.thead-inverse
                 tr
-                    th Text
-                    th Language
+                    th(ng-click="orderBy($event, 'text')") Text
+                        i.pull-right.glyphicon.glyphicon-sort-by-attributes-alt
+                    th(ng-click="orderBy($event, 'language')") Language
+                        i.pull-right.glyphicon.glyphicon-sort-by-attributes
                     th.col-md-2 Actions
 
             tbody
-                tr(ng-repeat="word in words | orderBy: ['language.name','text']")
+                tr(ng-repeat="word in words")
                     td
                         button.btn.btn-primary.btn-xs(ng-click="playAudio($event, word)") 
                             span.glyphicon.glyphicon-volume-up
@@ -29,8 +31,18 @@ block content
                         span &nbsp;
                         button.btn.btn-danger.btn-xs(ng-click='remove($event, word)')  
                             span.glyphicon.glyphicon-trash
-                            //- span  Delete
 
+         nav(aria-label="Page navigation")
+            ul.pagination
+                li
+                    a(href, aria-label="Previous")
+                        span(aria-hidden="true") &laquo;
+                li: a(href, ng-click="goToPage(1)") 1
+                li: a(href, ng-click="goToPage(2)") 2
+                li: a(href, ng-click="goToPage(3)") 3
+                li
+                    a(href, aria-label="Next")
+                        span(aria-hidden="true") &raquo;
 
                                 
         div#wordModal.modal.fade(role="dialog")

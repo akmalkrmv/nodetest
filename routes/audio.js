@@ -1,8 +1,8 @@
 var router = require('express').Router();
 var https = require("https");
 var path = require('path');
-var fs = require('fs');
 var url = require('url');
+var fs = require('fs');
 
 var models = require("../models/models");
 var Word = models.Word;
@@ -32,14 +32,18 @@ function saveAudioFile(word, callback) {
     if (!word) return;
 
     var text = word.text.toLowerCase();
-    var cultureName = word.language.cultureName || 'en-us';;
+    var cultureName = word.language.cultureName || 'en-us';
+    var params = {
+        q: text,
+        tl: cultureName,
+        ie: 'utf-8',
+        client: 'tw-ob'
+    };
 
-    var audioUrl = 'https://translate.google.com/translate_tts?client=tw-ob&tl=' + cultureName + '&q=' + text;
+    var audioUrl = 'https://translate.google.com/translate_tts?' + toUrlParams(params);
     var audioPath = path.resolve('./public/sounds/' + cultureName + '.' + text + '.mp3');
     var audioFile = fs.createWriteStream(audioPath);
 
-    // Todo: There is trouble with getting
-    //  russian pronounsation, need to correct that
     https.get(audioUrl, function (response) {
         response.pipe(audioFile);
 
@@ -48,6 +52,17 @@ function saveAudioFile(word, callback) {
     }, callback);
 }
 
-exports.saveAudioFile = saveAudioFile;
+function toUrlParams(objectParams) {
+    function toUrlKeyValue(key) {
+        return encodeURIComponent(key) + "=" + encodeURIComponent(objectParams[key]);
+    }
 
-module.exports = router;
+    return Object.keys(objectParams).map(toUrlKeyValue).join('&');
+}
+
+
+
+module.exports = {
+    router: router,
+    saveAudioFile: saveAudioFile
+};

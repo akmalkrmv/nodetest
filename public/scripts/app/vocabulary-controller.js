@@ -94,8 +94,7 @@ function VocabularyController($scope, VocabularyService, WordService, CategorySe
     $scope.save = function () {
         WordService.save($scope.selected).then($scope.loadAll);
     }
-    $scope.remove = function (event, word) {
-        event.preventDefault();
+    $scope.remove = function (word) {
         if (!confirm('Are you sure to delete this?')) return;
 
         VocabularyService.remove(vocabulary).then(function (response) {
@@ -105,7 +104,7 @@ function VocabularyController($scope, VocabularyService, WordService, CategorySe
     }
 
     $scope.openFileInput = function ($event) {
-        $($event.target).parent().find('input').click();
+        $($event.target).parent().find('input:file').click();
     }
 
     $scope.setFile = function (fileInputElement) {

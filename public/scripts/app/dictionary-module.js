@@ -70,26 +70,18 @@ function DictionaryController($scope, $http, DictionaryService, WordService) {
 
     function convertTopicElements($topicElement) {
         var $childElements = $topicElement.children();
+
         if ($childElements.length) {
-            for (var i = 0; i < $childElements.length; i++) {
-                var $element = $($childElements[i]);
-                if ($element.text())
-                    $element = convertTopicElements($element);
-                else return $element;
-            }
+            $childElements.each(function (index, element) {
+                convertTopicElements($(element));
+            });
         }
 
-        var $newElement = $(document.createElement($topicElement.get(0).nodeName));
-        var words = $topicElement.text().split(' ');
 
-        for (var i = 0; i < words.length; i++) {
-            var word = words[i];
-            var $span = $('<span class="topic-word">').text(word);
-            $newElement.append($span, ' ');
-        }
-
-        $topicElement.replaceWith($newElement);
-        return $newElement;
+        var htmlText = $topicElement.html().replace(/(\w+)(?![^<]*>|[^<>]*<\/)/gi, function (match) {
+            return '<span class="topic-word">' + match + '</span>';
+        });
+        $topicElement.html(htmlText);
     }
 
     // initialize

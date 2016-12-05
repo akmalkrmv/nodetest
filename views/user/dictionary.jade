@@ -6,53 +6,50 @@ block content
         h2 My dicitonary 
 
         div.row
-            div.col-md-10
-
-            div.col-md-2
-                input(type="checkbox", ng-model="showImages", id="showImages") 
-                label(for="showImages") &nbsp;Show images 
-        
+            div.col-md-12
+                div.pull-right
+                    input(type="checkbox", ng-model="showImages", id="showImages") 
+                    label(for="showImages") &nbsp;Show images 
+                    
         hr
 
         table.table.table-striped.table-vertical-centered
             thead.thead-inverse
                 tr
-                    th.col-md-1.center(ng-show="showImages")
-                    th.col-md-7 Words
+                    th.col-md-8 Words
                     th.col-md-2 Category
                     th.col-md-1 Progress
                     th.col-md-1 Actions
 
-            tbody(ng-repeat="category in categories")
-                tr.group-header
-                    td(colspan="100") {{category.text}}
+        div(ng-repeat="category in vocabularies | groupBy: 'category._id' ")
+            table.table.table-striped.table-vertical-centered
+                tbody
+                    tr.group-header
+                        td(colspan="100") {{category[0].category.text}}: 
+                            span.grey {{category.length}}
 
-                tr(ng-repeat="vocabulary in vocabularies | filter:category.text ")
-                    td.center(ng-show="showImages")
-                        div.table-image
-                            image(src="/images/no-image.png",
-                                  ng-src="{{vocabulary.imageUrl}}", 
-                                  ng-click="openFileInput($event)")
-                            //- input(type="file", style="display: none", 
-                            //-       onchange="angular.element(this).scope().setFile(this)")
-                    td
-                        button.btn.btn-primary.btn-xs(ng-click="playAudio($event, vocabulary.words[0])") 
-                            span.glyphicon.glyphicon-volume-up
-                        span &nbsp;{{getWords(vocabulary)}}
-                    td
-                        span {{vocabulary.category.text}}
-                    td
-                        span.progresses(ng-class="{'progresses-sm':!showImages, p1:true}")
-                        //- span.progresses(ng-class="{p2:true}")
-                        //- span.progresses(ng-class="{p3:true}")
-                        //- span.progresses(ng-class="{p4:true}")
-                    td
-                        button.btn.btn-default.btn-xs(data-toggle="modal", 
-                                                      data-target="#vocabularyModal", 
-                                                      ng-click='select(vocabulary)') 
-                            span.glyphicon.glyphicon-pencil
-                            span  Edit
-                        span &nbsp;
-                        button.btn.btn-danger.btn-xs(ng-click='remove($event, vocabulary)')  
-                            span.glyphicon.glyphicon-trash
+                    tr(ng-repeat="vocabulary in category ")
+                        td.col-md-8
+                            div.table-image(ng-show="showImages")
+                                image(src="/images/no-image.png",
+                                    ng-src="{{vocabulary.imageUrl}}", 
+                                    ng-click="openFileInput($event)")
+                                //- input(type="file", style="display: none", 
+                                //-       onchange="angular.element(this).scope().setFile(this)")
+                            button.btn.btn-primary.btn-xs(ng-click="playAudio($event, vocabulary.words[0])") 
+                                span.glyphicon.glyphicon-volume-up
+                            span &nbsp;{{getWords(vocabulary)}}
+                        td.col-md-2
+                            span {{vocabulary.category.text}}
+                        td.col-md-1
+                            span.progresses.progresses-sm(ng-class="{p1:true}")
+                        td.col-md-1
+                            button.btn.btn-default.btn-xs(data-toggle="modal", 
+                                                        data-target="#vocabularyModal", 
+                                                        ng-click='select(vocabulary)') 
+                                span.glyphicon.glyphicon-pencil
+                                span  Edit
+                            span &nbsp;
+                            button.btn.btn-danger.btn-xs(ng-click='remove($event, vocabulary)')  
+                                span.glyphicon.glyphicon-trash
 
