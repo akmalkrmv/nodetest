@@ -12,7 +12,12 @@ router.get('/vocabulary/:id', function (req, res) {
         if (err) res.send(err);
 
         var imagePath = path.resolve('./public/images/' + vocabulary._id);
-        res.sendFile(imagePath);
+        var noImagePath = path.resolve('./public/images/no-image.png');
+
+         fs.exists(imagePath, function (exists) {
+            if (exists) res.sendFile(imagePath);
+            else  res.sendFile(noImagePath);
+        });
     });
 });
 
