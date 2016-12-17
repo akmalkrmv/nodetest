@@ -3,7 +3,7 @@ var app = angular.module("app")
     .controller("DictionaryCtrl", DictionaryController);
 
 DictionaryService.$inject = ['$http'];
-DictionaryController.$inject = ['$scope', '$http', 'DictionaryService', 'WordService'];
+DictionaryController.$inject = ['$scope', '$http', 'DictionaryService', 'WordService', 'VocabularyService'];
 
 function DictionaryService($http) {
     var self = this;
@@ -32,7 +32,7 @@ function DictionaryService($http) {
     }
 }
 
-function DictionaryController($scope, $http, DictionaryService, WordService) {
+function DictionaryController($scope, $http, DictionaryService, WordService, VocabularyService) {
     $scope.loadAll = function () {
         WordService.loadAll().then(function (response) {
             $scope.words = response.data;
@@ -64,8 +64,31 @@ function DictionaryController($scope, $http, DictionaryService, WordService) {
     $scope.playAudio = WordService.playAudio;
 
     $scope.convertTopics = function () {
-        var $topic = $('.topic');
-        convertTopicElements($topic);
+        convertTopicElements($('.topic'));
+        $('body').on('click', handlePopovers);
+
+        function handlePopovers(e) {
+            var $target = $(e.target);
+
+            if ($target.parents('.popover').length) {
+                return;
+            }
+
+            $('[data-toggle="popover"]').each(function () {
+                var $this = $(this);
+                var isTarget = $this.is(e.target);
+                var isInTarget = $this.has(e.target).length === 0;
+                var isInPopover = $('.popover').has(e.target).length === 0;
+
+                if (!isTarget && isInTarget && isInPopover) {
+                    //$this.popover('hide');
+                } else {
+                    $scope.getTranslates($this.text(), function () {
+                        $target.popover('show');    
+                    });
+                }
+            });
+        }
     }
 
     function convertTopicElements($topicElement) {
@@ -79,9 +102,24 @@ function DictionaryController($scope, $http, DictionaryService, WordService) {
 
 
         var htmlText = $topicElement.html().replace(/(\w+)(?![^<]*>|[^<>]*<\/)/gi, function (match) {
-            return '<span class="topic-word">' + match + '</span>';
+            return '<span class="topic-word" data-toggle="popover" data-placement="bottom">' + match + '</span>';
         });
         $topicElement.html(htmlText);
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            trigger: 'manual',
+            content: function () {
+                // return $('.popover-template .popover-words').clone();
+                return $('.popover-words');
+            }
+        });
+    }
+
+    $scope.getTranslates = function (text, callBack) {
+        VocabularyService.getTranslates(text).then(function (response) {
+            $scope.translates = response.data || [];
+            if (typeof (callBack) == 'function') callBack();
+        });
     }
 
     // initialize

@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+
+    div.topic-content(ng-controller="TopicCtrl")
+        h3 Topics
+        hr
+
+        form
+            div.row
+                div.col-md-8
+                    div.form-group
+                        label(for="category") Category:
+                        select.form-control(ng-model="selected.category", 
+                                            ng-options="item._id as item.text for item in categories track by item._id")
+                
+
+                div.col-md-4(ng-show="selected._id")
+                    div.form-group
+                        label Select image:
+                        div.form-image
+                            image(ng-src="{{getImageUrl(selected)}}",
+                                    ng-click="openFileInput($event)")
+                            input(type="file", style="display: none", 
+                                    onchange="angular.element(this).scope().setFile(this)")
+                        p(ng-show="selected.imageUrl")
+                            a(href, ng-click="removeImage(selected)") remove image
+
+        div(text-angular="text-angular" name="htmlcontent" ng-model="htmlcontent")

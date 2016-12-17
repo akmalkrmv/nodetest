@@ -10,13 +10,14 @@ var Word = models.Word;
 
 // Get all
 router.get('/word/', function (req, res) {
+    var search = req.query.search && JSON.parse(req.query.search);
     Word
-        .find()
+        .find(search)
         .populate('language')
 
-        .limit(req.query.limit)
-        .skip(req.query.skip)
-        .sort(req.query.sort)
+        .limit(+req.query.limit)
+        .skip(+req.query.skip)
+        .sort(+req.query.sort)
 
         .exec(function (err, words) {
             if (err) res.send(err);

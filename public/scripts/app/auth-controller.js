@@ -1,38 +1,38 @@
-var app = angular.module("app");
+(function () {
 
-app.controller("AuthCtrl", ["$scope", "$http", "$localStorage", function ($scope, $http, $localStorage) {
-    var rootUrl = '/api/auth/';
-    $scope.storage = $localStorage;
+    angular
+        .module("app")
+        .controller("AuthCtrl", AuthController);
 
-    $scope.username = "";
-    $scope.password = "";
+    AuthController.$inject = ["$scope", "$http", "$localStorage"];
 
-    $scope.$watch('cookies', function (val) {
-        if (!val) return;
-        $scope.cookieId = val.get('id');
-        console.log($scope.cookieId);
-    });
+    function AuthController($scope, $http, $localStorage) {
+        var rootUrl = '/api/auth/';
+        $scope.storage = $localStorage;
 
-    $scope.login = function () {
-        $scope.errorMessage = '';
-        $http
-            .post(rootUrl, {
-                username: $scope.username,
-                password: $scope.password
-            })
-            .then(function (response) {
-                $scope.storage.token = response.data.token;
-                $scope.storage.username = $scope.username;
-                $('#authModal').modal('toggle');
-            }, function (response) {
-                console.error(response.data.message);
-                $scope.errorMessage = response.data.message;
-            });
+        $scope.username = "";
+        $scope.password = "";
+
+        $scope.login = function () {
+            $scope.errorMessage = '';
+            $http
+                .post(rootUrl, {
+                    username: $scope.username,
+                    password: $scope.password
+                })
+                .then(function (response) {
+                    $scope.storage.token = response.data.token;
+                    $scope.storage.username = $scope.username;
+                    $('#authModal').modal('toggle');
+                }, function (response) {
+                    console.error(response.data.message);
+                    $scope.errorMessage = response.data.message;
+                });
+        }
+
+        $scope.logout = function () {
+            $scope.storage.$reset();
+        }
     }
 
-    $scope.logout = function () {
-        $scope.storage.$reset();
-        console.log($scope.storage.sessionId);
-    }
-
-}]);
+})()

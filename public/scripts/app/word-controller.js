@@ -10,7 +10,7 @@ function WordService($http) {
     var rootUrl = '/api/word/';
 
     self.query = {
-        limit: 5
+        limit: 20
     };
 
     self.loadAll = function () {
@@ -47,6 +47,18 @@ function WordService($http) {
             audio.play();
         };
     }
+
+    self.querySearch = function (searchText) {
+        return $http.get(rootUrl, {
+            params: {
+                search: {
+                    "text": { $regex: searchText, $options: 'ig'
+                    }
+                }
+            }
+        });
+    }
+
 };
 
 function WordController($scope, $http, WordService) {

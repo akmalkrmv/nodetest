@@ -42,8 +42,18 @@ var DicitonarySchema = new mongoose.Schema({
   vocabulary: { type: mongoose.Schema.ObjectId, ref: 'vocabulary' },
 });
 
+
+var TopicSchema = new mongoose.Schema({
+  title: { type: String },
+  content: { type: String },
+  added: { type: Date, default: Date.now },
+  addedUser: { type: mongoose.Schema.ObjectId, ref: 'user' },
+  // Todo: add reference for Tags, Categories and/or other data 
+});
+
 var User = mongoose.model('user', UserSchema);
 var Word = mongoose.model('word', WordSchema);
+var Topic = mongoose.model('topic', TopicSchema);
 var Language = mongoose.model('language', LanguageSchema);
 var Category = mongoose.model('category', CategorySchema);
 var Vocabulary = mongoose.model('vocabulary', VocabularySchema);

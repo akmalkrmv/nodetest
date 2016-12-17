@@ -11,6 +11,7 @@ div(ng-controller="AuthCtrl")
         
             #navbar-inverse.collapse.navbar-collapse
                 ul.nav.navbar-nav
+                    li: a( href="/topic" ) Topics
                     li: a( href="/training" ) Training
                     li: a( href="/grammar" ) Grammar
                     li.dropdown
@@ -23,6 +24,7 @@ div(ng-controller="AuthCtrl")
                             li: a( href="/category" ) Categories 
                             li: a( href="/vocabulary" ) Vocabulary 
                             li: a( href="/word" ) Words
+                    li: a( href="/tests" ) Tests
                 ul.nav.navbar-nav.navbar-right
                     li
                         a(href="/user/dictionary") 
@@ -30,8 +32,6 @@ div(ng-controller="AuthCtrl")
                             span &nbsp; Dictionary
                     li(ng-if="storage.username == undefined") 
                         a(href, data-toggle="modal", data-target="#authModal") Login
-                    //- li(ng-if="storage.username") 
-                    //-     a(href, ng-click="logout()") Logout
                     li.dropdown(ng-if="storage.username") 
                         a.dropdown-toggle(href, data-toggle="dropdown", role="button", aria-expanded="false" ) {{storage.username}} 
                             span.caret

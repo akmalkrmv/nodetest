@@ -51,4 +51,20 @@ router.get('/auth', function(req,res,next){
 });
 
 
+router.get('/topic', function(req,res,next){
+    res.render('topic/index',{
+        title: 'Topic'
+    });
+});
+
+
+router.get('/tests', function(req,res,next){
+    res.render('tests/index',{
+        title: 'Tests'
+    });
+});
+
+
+
+
 module.exports = router;

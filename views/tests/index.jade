@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+
+    //- h1#qunit-header QUnit Test Suite
+    //- h2#qunit-banner
+    //- div#qunit-testrunner-toolbar
+    //- h2#qunit-userAgent
+    //- ol#qunit-tests
+
+    div#qunit
+    div#qunit-fixture
+
+    script(src='https://code.jquery.com/qunit/qunit-2.0.1.js')
+    script(src='http://code.angularjs.org/1.1.4/angular-mocks.js')
+    script(src='/scripts/tests/hello.js')
+    script(src='/scripts/tests/app.js')

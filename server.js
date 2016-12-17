@@ -7,7 +7,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var busboy = require('connect-busboy'); //middleware for form/file upload
 var multiparty = require('connect-multiparty');
-var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose'); //used for database connections
 var jwt = require('jsonwebtoken');
 
@@ -46,7 +45,6 @@ app.use('/api', require('./routes/api/word'));
 app.use('/api', require('./routes/api/language'));
 app.use('/api', require('./routes/api/category'));
 app.use('/api', require('./routes/api/vocabulary'));
-app.use('/api', require('./routes/api/auth'));
 
 // error handlers
 

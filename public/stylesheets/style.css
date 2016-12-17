@@ -1,14 +1,11 @@
 /*@import url(http://fonts.googleapis.com/css?family=Roboto);*/
 
-
-/**/
-
-* {
+/** {
   transition: 0.3s all ease;
-}
+}*/
 
 body {
-  padding-top: 50px;
+  padding-top: 50px !important;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   cursor: default;
 }
@@ -33,7 +30,6 @@ ul {
 .grey {
   color: #999;
 }
-
 
 .topic-word {
   cursor: pointer;
@@ -122,9 +118,9 @@ tr.group-header td {
 }
 
 th i.glyphicon {
-    /*float: right;*/
-    font-size: .8em;
-    cursor: pointer;
+  /*float: right;*/
+  font-size: .8em;
+  cursor: pointer;
 }
 
 .progresses {
@@ -182,3 +178,35 @@ th i.glyphicon {
   background-position-y: -35px;
 }
 
+
+/* fixing angular modular elements in bootstrap modal */
+
+md-virtual-repeat-container,
+md-select-menu,
+.md-select-menu-container {
+  z-index: 1100 !important;
+}
+
+/* Popover styles */
+body .popover {
+  border-radius: 0px;
+}
+
+.topic-content .popover-content {
+  padding: 0;
+}
+
+.topic-content .popover-content .translate-item {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+}
+
+.topic-content .popover-content .translate-item:hover {
+  background-color: #eee;
+}
+.translate-rating{
+  min-width: 20px;
+}
+
+.topic-content .popover-content .translate-item a {}

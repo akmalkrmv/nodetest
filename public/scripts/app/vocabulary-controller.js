@@ -5,6 +5,7 @@ var app = angular.module("app")
 VocabularyService.$inject = ['$http'];
 VocabularyController.$inject = [
     '$scope',
+    '$q',
     'VocabularyService',
     'WordService',
     'CategoryService'
@@ -34,6 +35,10 @@ function VocabularyService($http) {
 
     self.remove = function (model) {
         return $http.delete(rootUrl + model._id);
+    }
+
+    self.getTranslates = function (text) {
+         return $http.get('/api/translate/' + text);
     }
 
     self.getWords = function (vocabulary) {
@@ -67,7 +72,7 @@ function VocabularyService($http) {
     }
 }
 
-function VocabularyController($scope, VocabularyService, WordService, CategoryService) {
+function VocabularyController($scope, $q, VocabularyService, WordService, CategoryService) {
     var rootUrl = '/api/vocabulary/';
 
     $scope.showImages = true;
@@ -135,6 +140,17 @@ function VocabularyController($scope, VocabularyService, WordService, CategorySe
             .then(function () {
                 vocabulary.imageUrl = null;
             }, console.error);
+    }
+
+    $scope.querySearch = function (searchText) {
+        var deferred = $q.defer();
+
+        WordService.querySearch(searchText).then(function (response) {
+            console.log(response.data);
+            deferred.resolve(response.data);
+        });
+
+        return deferred.promise;
     }
 
     $scope.getWords = VocabularyService.getWords;

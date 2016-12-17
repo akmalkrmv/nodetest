@@ -46,15 +46,16 @@ block content
                                                             ng-options="item._id as item.text for item in categories track by item._id")
                                     
                                     div.form-group
-                                        label(for="word") Words:
-                                        select.multiselect.form-control(multiple,
-                                                            style="height: 200px;",
-                                                            ng-model="selected.words",
-                                                            ng-model-options="{ updateOn: 'blur' }",  
-                                                            ng-options="item._id as item.text for item in words track by item._id")
+                                        //- label(for="word") Words:
+                                        //- select.multiselect.form-control(multiple,
+                                        //-                     style="height: 200px;",
+                                        //-                     ng-model="selected.words",
+                                        //-                     ng-model-options="{ updateOn: 'blur' }",  
+                                        //-                     ng-options="item._id as item.text for item in words track by item._id")
+
                                 div.col-md-4(ng-show="selected._id")
                                     div.form-group
-                                        p: label Select image:
+                                        label Select image:
                                         div.form-image
                                             image(ng-src="{{getImageUrl(selected)}}",
                                                   ng-click="openFileInput($event)")
@@ -62,7 +63,28 @@ block content
                                                   onchange="angular.element(this).scope().setFile(this)")
                                         p(ng-show="selected.imageUrl")
                                             a(href, ng-click="removeImage(selected)") remove image
+                            div.row
+                                div.col-md-6
+                                    label English:
+                                    md-autocomplete(md-selected-item='selectedItemEn', 
+                                                    md-search-text='searchTextEn', 
+                                                    md-items='item in querySearch(searchTextEn)', 
+                                                    md-item-text='item.text', 
+                                                    md-min-length='0', 
+                                                    placeholder='Type word')
+                                        md-item-template
+                                            span(md-highlight-text='searchTextEn', md-highlight-flags='^i') {{item.text}}
 
+                                div.col-md-6
+                                    label Russian:
+                                    md-autocomplete(md-selected-item='selectedItemRu', 
+                                                    md-search-text='searchTextRu', 
+                                                    md-items='item in querySearch(searchTextRu)', 
+                                                    md-item-text='item.text', 
+                                                    md-min-length='0', 
+                                                    placeholder='Type word')
+                                        md-item-template
+                                            span(md-highlight-text='searchTextRu', md-highlight-flags='^i') {{item.text}}
                     div.modal-footer
                         button.btn.btn-primary(data-dismiss="modal", ng-click='save()') Save
                         button.btn.btn-default(data-dismiss="modal") Close
