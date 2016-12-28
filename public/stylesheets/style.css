@@ -1,5 +1,6 @@
 /*@import url(http://fonts.googleapis.com/css?family=Roboto);*/
 
+
 /** {
   transition: 0.3s all ease;
 }*/
@@ -10,8 +11,13 @@ body {
   cursor: default;
 }
 
-a {
+/*body a {
   color: #00B7FF;
+}*/
+
+body a:hover,
+body a:focus {
+  text-decoration: none;
 }
 
 ul {
@@ -37,6 +43,7 @@ ul {
   border-radius: 3px;
 }
 
+.topic-word.selected,
 .topic-word:hover {
   background-color: #2196F3;
   color: #fff;
@@ -187,26 +194,21 @@ md-select-menu,
   z-index: 1100 !important;
 }
 
+
 /* Popover styles */
+
 body .popover {
   border-radius: 0px;
 }
 
-.topic-content .popover-content {
-  padding: 0;
-}
-
 .topic-content .popover-content .translate-item {
-  display: inline-block;
-  width: 100%;
   padding: 10px;
 }
 
 .topic-content .popover-content .translate-item:hover {
   background-color: #eee;
 }
-.translate-rating{
-  min-width: 20px;
-}
 
-.topic-content .popover-content .translate-item a {}
+.topic-content .popover-words {
+  margin: -10px 0;
+}

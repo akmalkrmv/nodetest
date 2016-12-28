@@ -8,12 +8,15 @@
 
     function AuthController($scope, $http, $localStorage) {
         var rootUrl = '/api/auth/';
-        $scope.storage = $localStorage;
 
+        $scope.storage = $localStorage;
         $scope.username = "";
         $scope.password = "";
 
-        $scope.login = function () {
+        $scope.login = login;
+        $scope.logout = logout;
+
+        function login() {
             $scope.errorMessage = '';
             $http
                 .post(rootUrl, {
@@ -23,14 +26,14 @@
                 .then(function (response) {
                     $scope.storage.token = response.data.token;
                     $scope.storage.username = $scope.username;
-                    $('#authModal').modal('toggle');
+                    $('#authModal').modal('hide');
                 }, function (response) {
                     console.error(response.data.message);
                     $scope.errorMessage = response.data.message;
                 });
         }
 
-        $scope.logout = function () {
+        function logout() {
             $scope.storage.$reset();
         }
     }

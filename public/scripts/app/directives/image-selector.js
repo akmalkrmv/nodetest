@@ -12,12 +12,10 @@
                 file: '@',
                 onFileSlected: '&',
             },
-            template: '<img ng-src="/images/no-image.png" ng-click="openFileInput($event)" src="/images/no-image.png">' +
-                '<input type="file" style="display: none" onchange="angular.element(this).scope().setFile(this)">'
+            template: '<img src="/images/no-image.png" ng-src="/images/no-image.png" ng-click="openFileInput($event)" >\
+                       <input type="file" style="display: none" onchange="angular.element(this).scope().setFile(this)">'
         }
     }
-
-
 
 
 })()

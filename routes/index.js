@@ -44,27 +44,25 @@ router.get('/grammar', function (req, res, next) {
     });
 });
 
-router.get('/auth', function(req,res,next){
-    res.render('auth',{
+router.get('/auth', function (req, res, next) {
+    res.render('auth', {
         title: 'Authenticate'
     });
 });
 
 
-router.get('/topic', function(req,res,next){
-    res.render('topic/index',{
+router.get('/topic', function (req, res, next) {
+    res.render('topic/index', {
         title: 'Topic'
     });
 });
 
 
-router.get('/tests', function(req,res,next){
-    res.render('tests/index',{
+router.get('/tests', function (req, res, next) {
+    res.render('tests/index', {
         title: 'Tests'
     });
 });
-
-
 
 
 module.exports = router;

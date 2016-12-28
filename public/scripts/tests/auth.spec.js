@@ -28,20 +28,47 @@
         assert.ok(angular.isFunction(this.$scope.logout));
     });
 
-
-    QUnit.test('Login for admin should pass', function (assert) {
+    QUnit.test('Should show errorMessage if not pass', function (assert) {
+        var errorMessage = 'error message';
         var rootUrl = '/api/auth/';
+
         http.expectPOST(rootUrl, {
             username: '',
             password: ''
         }).respond(400, {
-            message: 'fuck you'
+            message: errorMessage
         });
 
         this.$scope.login();
         http.flush();
 
-        assert.equal(this.$scope.errorMessage, 'fuck you');
+        assert.equal(this.$scope.errorMessage, errorMessage);
+    });
+
+    QUnit.test('Should store username and token if pass', function (assert) {
+        var token = 'token';
+        var rootUrl = '/api/auth/';
+
+        this.$scope.username = 'testuser';
+        this.$scope.password = 'password';
+
+        http.expectPOST(rootUrl, {
+            username: this.$scope.username,
+            password: this.$scope.password
+        }).respond({
+            token: token
+        });
+
+        this.$scope.login();
+        http.flush();
+
+        assert.equal(this.$scope.storage.token, token);
+        assert.equal(this.$scope.storage.username, this.$scope.username);
+    });
+
+   QUnit.test('Should clear store when logout', function (assert) {
+        this.$scope.logout();
+        assert.equal(this.$scope.storage.token, undefined);
     });
 
 })()

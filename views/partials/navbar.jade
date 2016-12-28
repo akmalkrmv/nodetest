@@ -10,6 +10,7 @@ div(ng-controller="AuthCtrl")
                 a.navbar-brand(href="/") NodeTest
         
             #navbar-inverse.collapse.navbar-collapse
+                
                 ul.nav.navbar-nav
                     li: a( href="/topic" ) Topics
                     li: a( href="/training" ) Training
@@ -25,9 +26,9 @@ div(ng-controller="AuthCtrl")
                             li: a( href="/vocabulary" ) Vocabulary 
                             li: a( href="/word" ) Words
                     li: a( href="/tests" ) Tests
+
                 ul.nav.navbar-nav.navbar-right
-                    li
-                        a(href="/user/dictionary") 
+                    li: a(href="/user/dictionary") 
                             span.glyphicon.glyphicon-book 
                             span &nbsp; Dictionary
                     li(ng-if="storage.username == undefined") 
@@ -38,6 +39,8 @@ div(ng-controller="AuthCtrl")
                         ul.dropdown-menu( role="menu" )
                             li: a(href, ng-click="logout()") Logout
             
+
+
     div#authModal.modal.fade(tabindex="-1" role="dialog" )
         div.modal-dialog.modam-sm(role="document")
             div.modal-content

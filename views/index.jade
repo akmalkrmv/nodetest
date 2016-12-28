@@ -2,7 +2,7 @@ extends layout
 
 block content
   
-  div.topic-content(ng-controller="DictionaryCtrl")
+  div.topic-content(ng-controller="TopicController as topic")
     h1= title
     h3 Welcome to the NodeTest application!
     hr
@@ -19,11 +19,11 @@ block content
       p.
         Etiam at ligula et tellus ullamcorper ultrices. In fermentum, lorem non cursus porttitor, diam urna accumsan lacus, sed interdum wisi nibh nec nisl. Ut tincidunt volutpat urna. Mauris eleifend nulla eget mauris. Sed cursus quam id felis. Curabitur posuere quam vel nibh. Cras dapibus dapibus nisl. Vestibulum quis dolor a felis congue vehicula. Maecenas pede purus, tristique ac, tempus eget, egestas quis, mauris. Curabitur non eros. Nullam hendrerit bibendum justo. Fusce iaculis, est quis lacinia pretium, pede metus molestie lacus, at gravida wisi ante at libero.
 
-    div.hidden.popover-template
-      span.popover-words
-        span.translate-item(ng-repeat='item in translates')
-          span.translate-rating {{rating || 1}} 
-          a(href ng-bind='item.text')
-        span.translate-item
-          input
-          button.btn.btn-primary.btn-xs +add
+    //- div.hidden.popover-template
+    //-   div.popover-words
+    //-     div.row.translate-item(ng-repeat='item in topic.translates')
+    //-       .col-md-2: span.translate-rating {{item.rating || 1}} 
+    //-       .col-md-10: a(href ng-bind='item.text')
+    //-     div.row.translate-item
+    //-       .col-md-8: input
+    //-       .col-md-4: button.btn.btn-primary.btn-xs +add

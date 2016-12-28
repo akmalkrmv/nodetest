@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var busboy = require('connect-busboy'); //middleware for form/file upload
-var multiparty = require('connect-multiparty');
+var multiparty = require('connect-multiparty'); //middleware for form/file upload
 var mongoose = require('mongoose'); //used for database connections
 var jwt = require('jsonwebtoken');
 

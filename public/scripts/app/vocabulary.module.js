@@ -38,15 +38,16 @@ function VocabularyService($http) {
     }
 
     self.getTranslates = function (text) {
-         return $http.get('/api/translate/' + text);
+        return $http.get('/api/translate/' + text);
+    }
+    self.suggestTranslate = function (text, suggestion) {
+        return $http.get('/api/suggest/' + text + '/' + suggestion);
     }
 
     self.getWords = function (vocabulary) {
-        return vocabulary.words
-            .map(function (val) {
-                return val.text;
-            })
-            .join(' - ');
+        return vocabulary.words.map(function (val) {
+            return val.text;
+        }).join(' - ');
     };
     self.getImageUrl = function (vocabulary) {
         if (!vocabulary || !vocabulary.imageUrl)
@@ -99,7 +100,7 @@ function VocabularyController($scope, $q, VocabularyService, WordService, Catego
     $scope.save = function () {
         WordService.save($scope.selected).then($scope.loadAll);
     }
-    $scope.remove = function (word) {
+    $scope.remove = function (vocabulary) {
         if (!confirm('Are you sure to delete this?')) return;
 
         VocabularyService.remove(vocabulary).then(function (response) {
