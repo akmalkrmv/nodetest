@@ -77,30 +77,61 @@ function VocabularyController($scope, $q, VocabularyService, WordService, Catego
     var rootUrl = '/api/vocabulary/';
 
     $scope.showImages = true;
+    $scope.vocabularies = [];
+    $scope.words = [];
+    $scope.categories = [];
+    $scope.selected = null;
 
-    $scope.loadAll = function () {
+    $scope.loadAll = loadAll;
+    $scope.loadWords = loadWords;
+    $scope.loadCategories = loadCategories;
+    $scope.querySearch = querySearch;
+
+    $scope.select = select;
+    $scope.save = save;
+    $scope.remove = remove;
+
+    $scope.openFileInput = openFileInput;
+    $scope.setFile = setFile;
+    $scope.previewImage = previewImage;
+    $scope.removeImage = removeImage;
+
+    $scope.getWords = VocabularyService.getWords;
+    $scope.getImageUrl = VocabularyService.getImageUrl;
+    $scope.playAudio = WordService.playAudio;
+
+    // initialize
+    loadAll();
+    loadWords();
+    loadCategories();
+
+    function loadAll() {
         VocabularyService.loadAll().then(function (response) {
             $scope.vocabularies = response.data;
         });
     }
-    $scope.loadWords = function () {
+
+    function loadWords() {
         WordService.loadAll().then(function (response) {
             $scope.words = response.data;
         });
     }
-    $scope.loadCategories = function () {
+
+    function loadCategories() {
         CategoryService.getAll().then(function (response) {
             $scope.categories = response.data;
         });
     }
 
-    $scope.select = function (item) {
+    function select(item) {
         $scope.selected = item;
     }
-    $scope.save = function () {
-        WordService.save($scope.selected).then($scope.loadAll);
+
+    function save() {
+        WordService.save($scope.selected).then(loadAll);
     }
-    $scope.remove = function (vocabulary) {
+
+    function remove(vocabulary) {
         if (!confirm('Are you sure to delete this?')) return;
 
         VocabularyService.remove(vocabulary).then(function (response) {
@@ -109,11 +140,11 @@ function VocabularyController($scope, $q, VocabularyService, WordService, Catego
         });
     }
 
-    $scope.openFileInput = function ($event) {
+    function openFileInput($event) {
         $($event.target).parent().find('input:file').click();
     }
 
-    $scope.setFile = function (fileInputElement) {
+    function setFile(fileInputElement) {
         var file = fileInputElement.files[0];
         if (!file) return;
 
@@ -124,10 +155,10 @@ function VocabularyController($scope, $q, VocabularyService, WordService, Catego
             .setImage($scope.selected, file)
             .then(console.log, console.error);
 
-        $scope.previewImage(file);
+        previewImage(file);
     }
 
-    $scope.previewImage = function (file) {
+    function previewImage(file) {
         var fileReader = new FileReader();
         fileReader.onload = function () {
             $scope.selected.imageUrl = fileReader.result;
@@ -135,7 +166,7 @@ function VocabularyController($scope, $q, VocabularyService, WordService, Catego
         fileReader.readAsDataURL(file);
     }
 
-    $scope.removeImage = function (vocabulary) {
+    function removeImage(vocabulary) {
         VocabularyService
             .removeImage(vocabulary)
             .then(function () {
@@ -143,7 +174,7 @@ function VocabularyController($scope, $q, VocabularyService, WordService, Catego
             }, console.error);
     }
 
-    $scope.querySearch = function (searchText) {
+    function querySearch(searchText) {
         var deferred = $q.defer();
 
         WordService.querySearch(searchText).then(function (response) {
@@ -154,12 +185,4 @@ function VocabularyController($scope, $q, VocabularyService, WordService, Catego
         return deferred.promise;
     }
 
-    $scope.getWords = VocabularyService.getWords;
-    $scope.getImageUrl = VocabularyService.getImageUrl;
-    $scope.playAudio = WordService.playAudio;
-
-    // initialize
-    $scope.loadAll();
-    $scope.loadWords();
-    $scope.loadCategories();
 }

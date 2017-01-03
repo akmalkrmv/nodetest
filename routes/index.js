@@ -58,6 +58,12 @@ router.get('/topic', function (req, res, next) {
 });
 
 
+router.get('/topic/create', function (req, res, next) {
+    res.render('topic/create', {
+        title: 'Topic'
+    });
+});
+
 router.get('/tests', function (req, res, next) {
     res.render('tests/index', {
         title: 'Tests'
